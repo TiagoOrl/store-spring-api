@@ -35,6 +35,8 @@ public class Product {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-    @Column(name = "fk_category_id")
-    private int fkCategoryId;
+    // MANY Products to One Category
+    @ManyToOne
+    @JoinColumn(name = "fk_category_id", nullable = false)
+    private ProductCategory category;
 }
