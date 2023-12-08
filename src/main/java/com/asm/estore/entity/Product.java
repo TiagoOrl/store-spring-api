@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name="product")
@@ -42,4 +43,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "fk_category_id", nullable = false)
     private ProductCategory category;
+
+
+    @ManyToMany
+    private Set<Order> orders;
 }

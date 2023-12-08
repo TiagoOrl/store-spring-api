@@ -6,11 +6,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "order_main")
 @Data
-public class OrderMain {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -29,4 +30,13 @@ public class OrderMain {
     @ManyToOne
     @JoinColumn(name = "fk_client_id", nullable = false)
     private Client client;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "fk_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_product_id")
+    )
+    private Set<Product> products;
 }

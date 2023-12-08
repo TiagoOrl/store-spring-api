@@ -40,5 +40,5 @@ public class Client {
     // non owning side of relationship
     //One Client to MANY Orders
     @OneToMany(mappedBy = "client")
-    private Set<OrderMain> orders;
+    private Set<Order> orders;
 }

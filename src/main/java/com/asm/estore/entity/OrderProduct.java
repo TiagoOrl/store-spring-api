@@ -3,8 +3,6 @@ package com.asm.estore.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "order_product")
 @Data
