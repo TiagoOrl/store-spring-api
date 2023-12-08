@@ -2,6 +2,8 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -24,7 +26,9 @@ public class Client {
     @Column
     private Date dob;
     @Column(name="created_at")
+    @CreationTimestamp
     private Date createdAt;
     @Column(name="updated_at")
+    @UpdateTimestamp
     private Date updatedAt;
 }

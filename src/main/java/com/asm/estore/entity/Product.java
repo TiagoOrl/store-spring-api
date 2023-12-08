@@ -2,6 +2,8 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
@@ -28,8 +30,10 @@ public class Product {
     @Column(name="units_in_stock")
     private int unitsInStock;
     @Column(name="created_at")
+    @CreationTimestamp
     private Date createdAt;
     @Column(name="updated_at")
+    @UpdateTimestamp
     private Date updatedAt;
     @Column(name = "fk_category_id")
     private int fkCategoryId;
