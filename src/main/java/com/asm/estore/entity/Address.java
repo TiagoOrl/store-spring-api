@@ -33,7 +33,10 @@ public class Address {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-    @Column(name = "fk_client_id")
-    private int fkClientId;
+
+    // owning side of relationship
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_client_id", referencedColumnName = "id")
+    private Client client;
 
 }

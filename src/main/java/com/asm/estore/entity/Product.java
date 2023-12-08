@@ -35,7 +35,10 @@ public class Product {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+
     // MANY Products to One Category
+    // OWNING side of relationship
     @ManyToOne
     @JoinColumn(name = "fk_category_id", nullable = false)
     private ProductCategory category;

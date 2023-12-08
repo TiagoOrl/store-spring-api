@@ -31,4 +31,8 @@ public class Client {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+    // non owning side of relationship
+    @OneToOne(mappedBy = "client")
+    private Address address;
 }

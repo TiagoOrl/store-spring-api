@@ -30,6 +30,7 @@ public class ProductCategory {
     private Date updatedAt;
 
     // ONE Category to MANY Products
+    // NON OWNING side of relationship
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Set<Product> products;
 }
