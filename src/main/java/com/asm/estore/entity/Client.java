@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "client")
@@ -35,4 +36,9 @@ public class Client {
     // non owning side of relationship
     @OneToOne(mappedBy = "client")
     private Address address;
+
+    // non owning side of relationship
+    //One Client to MANY Orders
+    @OneToMany(mappedBy = "client")
+    private Set<OrderMain> orders;
 }

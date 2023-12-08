@@ -31,6 +31,6 @@ public class ProductCategory {
 
     // ONE Category to MANY Products
     // NON OWNING side of relationship
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product_category")
     private Set<Product> products;
 }

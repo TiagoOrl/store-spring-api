@@ -23,6 +23,10 @@ public class OrderMain {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-    @Column(name = "fk_client_id")
-    private int fkClientId;
+
+    // MANY Orders to One Client
+    // OWNING side of relationship
+    @ManyToOne
+    @JoinColumn(name = "fk_client_id", nullable = false)
+    private Client client;
 }
