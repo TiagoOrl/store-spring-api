@@ -39,6 +39,7 @@ public class Client {
 
     // non owning side of relationship
     //One Client to MANY Orders
-    @OneToMany(mappedBy = "client")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "fk_client_id")
     private Set<Order> orders;
 }
