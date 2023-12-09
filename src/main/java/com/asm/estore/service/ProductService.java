@@ -1,6 +1,17 @@
 package com.asm.estore.service;
 
 import com.asm.estore.dto.UpdateProductDTO;
+import com.asm.estore.entity.Product;
+import com.asm.estore.repository.ProductRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Component // annotation for DI
 public class ProductService {
@@ -57,10 +68,10 @@ public class ProductService {
             product.setUnitPrice(dto.getUnitPrice());
 
         if (dto.isActive() != null)
-            product.setIsActive(dto.isActive());
+            product.setActive(dto.isActive());
 
         if (dto.getStockCount() != null)
-            product.setStockCount(dto.getStockCount());
+            product.setUnitsInStock(dto.getStockCount());
 
         product.setUpdatedAt(new Date());
     }

@@ -1,7 +1,6 @@
 package com.asm.estore.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +30,7 @@ public class ProductCategory {
 
     // ONE Category to MANY Products
     // NON OWNING side of relationship
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product_category")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "fk_category_id")
     private Set<Product> products;
 }

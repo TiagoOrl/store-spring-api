@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,14 +36,6 @@ public class Product {
     @UpdateTimestamp
     private Date updatedAt;
 
-
-    // MANY Products to One Category
-    // OWNING side of relationship
-    @ManyToOne
-    @JoinColumn(name = "fk_category_id", nullable = false)
-    private ProductCategory category;
-
-
-    @ManyToMany
+    @ManyToMany(mappedBy = "products")
     private Set<Order> orders;
 }

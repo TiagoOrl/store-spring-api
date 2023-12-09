@@ -1,7 +1,12 @@
 package com.asm.estore.controller;
 
+import com.asm.estore.dto.UpdateProductDTO;
+import com.asm.estore.entity.Product;
+import com.asm.estore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/product")
