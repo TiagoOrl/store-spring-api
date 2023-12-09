@@ -33,12 +33,12 @@ public class Client {
     @UpdateTimestamp
     private Date updatedAt;
 
-    // non owning side of relationship
     @OneToOne(mappedBy = "client")
     private Address address;
 
     // non owning side of relationship
     //One Client to MANY Orders
-    @OneToMany(mappedBy = "client")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "fk_client_id")
     private Set<Order> orders;
 }
