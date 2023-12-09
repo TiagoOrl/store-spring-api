@@ -1,5 +1,6 @@
 package com.asm.estore.service;
 
+import com.asm.estore.dto.AddProductDTO;
 import com.asm.estore.dto.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.ProductRepository;
@@ -27,13 +28,32 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public void addProduct(Product product) {
-        Optional<Product> productFound = repository.findProductByName(product.getName());
+    public void addProduct(AddProductDTO dto) {
+
+        if (
+                dto.getCategoryId() == null ||
+                dto.getName() == null ||
+                dto.getDescription() == null ||
+                dto.getUnitPrice() == null ||
+                dto.getUnitsInStock() == null ||
+                dto.getActive() == null
+        )
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
+
+        Optional<Product> productFound = repository.findProductByName(dto.getName());
         if (productFound.isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This name already exists");
 
-        product.setCreatedAt(new Date());
-        repository.save(product);
+        Product newProduct = new Product(
+                dto.getName(),
+                dto.getDescription(),
+                dto.getUnitPrice(),
+                dto.getUnitsInStock(),
+                dto.getActive(),
+                dto.getCategoryId()
+        );
+
+        repository.save(newProduct);
     }
 
     public void deleteById(Long id) {
@@ -67,8 +87,8 @@ public class ProductService {
         if (dto.getUnitPrice() != null)
             product.setUnitPrice(dto.getUnitPrice());
 
-        if (dto.isActive() != null)
-            product.setActive(dto.isActive());
+        if (dto.getActive() != null)
+            product.setActive(dto.getActive());
 
         if (dto.getStockCount() != null)
             product.setUnitsInStock(dto.getStockCount());

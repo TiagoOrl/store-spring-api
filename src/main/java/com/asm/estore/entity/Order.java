@@ -24,6 +24,8 @@ public class Order {
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+    @Column(name = "fk_client_id")
+    private Integer clientId;
 
 
     @ManyToMany

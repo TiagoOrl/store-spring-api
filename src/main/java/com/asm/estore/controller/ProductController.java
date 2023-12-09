@@ -1,5 +1,6 @@
 package com.asm.estore.controller;
 
+import com.asm.estore.dto.AddProductDTO;
 import com.asm.estore.dto.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.service.ProductService;
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @PostMapping("add")
-    public void addProduct(@RequestBody Product product) {
+    public void addProduct(@RequestBody AddProductDTO product) {
         productService.addProduct(product);
     }
 

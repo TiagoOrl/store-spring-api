@@ -33,7 +33,6 @@ public class Client {
     @UpdateTimestamp
     private Date updatedAt;
 
-    // non owning side of relationship
     @OneToOne(mappedBy = "client")
     private Address address;
 
