@@ -15,21 +15,29 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
+
     @Column
     private String street;
+
     @Column
     private String neighborhood;
+
     @Column
     private int number;
+
     @Column
     private String city;
+
     @Column(name = "state_or_county")
     private String stateOrCounty;
+
     @Column
     private String country;
+
     @Column(name="created_at")
     @CreationTimestamp
     private Date createdAt;
+
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;

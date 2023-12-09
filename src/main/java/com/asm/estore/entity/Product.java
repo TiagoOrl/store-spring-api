@@ -2,6 +2,7 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="product")
-@Data // auto generate getter and setters
+@Data @NoArgsConstructor // auto generate getter and setters
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
