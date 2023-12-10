@@ -2,6 +2,7 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "address")
-@Data
+@Data @NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +43,6 @@ public class Address {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @Column(name = "fk_client_id")
+    private Integer fk_client_id;
 }

@@ -11,10 +11,13 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
+
     @Column
     private int amount;
+
     @Column(name = "fk_order_id")
     private int fkOrderId;
+
     @Column(name = "fk_product_id")
     private int fkProductId;
 }

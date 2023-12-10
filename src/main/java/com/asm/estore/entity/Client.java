@@ -16,7 +16,7 @@ import java.util.Set;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private int id;
 
     @Column(name = "first_name")
@@ -42,8 +42,9 @@ public class Client {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_client_id")
+    @OneToOne(optional=false)
+    @JoinColumn(
+            name="fk_client_id", unique=true, nullable=false, updatable=false)
     private Address address;
 
     // non owning side of relationship
