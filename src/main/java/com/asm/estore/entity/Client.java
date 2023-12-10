@@ -3,6 +3,7 @@ package com.asm.estore.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -41,7 +42,8 @@ public class Client {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToOne(mappedBy = "client")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_client_id")
     private Address address;
 
     // non owning side of relationship

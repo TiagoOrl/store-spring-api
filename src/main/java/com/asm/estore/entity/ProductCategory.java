@@ -31,6 +31,6 @@ public class ProductCategory {
     // ONE Category to MANY Products
     // NON OWNING side of relationship
     @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "fk_category_id")
+    @JoinColumn(name = "fk_category_id") // name of FK present in Product
     private Set<Product> products;
 }
