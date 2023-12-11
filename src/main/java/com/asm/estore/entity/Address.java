@@ -2,6 +2,7 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,34 +10,39 @@ import java.util.Date;
 
 @Entity
 @Table(name = "address")
-@Data
+@Data @NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private int id;
-    @Column
+
+    @Column(name = "street")
     private String street;
-    @Column
+
+    @Column(name = "neighborhood")
     private String neighborhood;
-    @Column
+
+    @Column(name = "number")
     private int number;
-    @Column
+
+    @Column(name = "city")
     private String city;
+
     @Column(name = "state_or_county")
     private String stateOrCounty;
-    @Column
+
+    @Column(name = "country")
     private String country;
+
     @Column(name="created_at")
     @CreationTimestamp
     private Date createdAt;
+
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
 
-    // owning side of relationship
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_client_id", referencedColumnName = "id")
-    private Client client;
-
+    @Column(name = "fk_client_id")
+    private Integer fk_client_id;
 }

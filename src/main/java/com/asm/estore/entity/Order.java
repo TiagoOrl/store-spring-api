@@ -16,14 +16,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
+
     @Column(name = "total_sum")
     private int totalSum;
+
     @Column(name="created_at")
     @CreationTimestamp
     private Date createdAt;
+
     @Column(name="updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
     @Column(name = "fk_client_id")
     private Integer clientId;
 
