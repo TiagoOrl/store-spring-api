@@ -2,6 +2,7 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,18 +15,21 @@ import java.util.Set;
 //@Data -- known bug
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
+
     @Column
     private String name;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+
     @Column(name = "updated_at")
-    @UpdateTimestamp
     private Date updatedAt;
 
     // ONE Category to MANY Products
@@ -33,4 +37,8 @@ public class ProductCategory {
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "fk_category_id") // name of FK present in Product
     private Set<Product> products;
+
+    public ProductCategory(String name) {
+        this.name = name;
+    }
 }

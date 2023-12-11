@@ -12,19 +12,19 @@ import java.util.Optional;
 
 @Component
 public class OrderProductService {
-    private final OrderProductRepository repository;
+    private final OrderProductRepository orderProductRepo;
 
     @Autowired
-    public OrderProductService(OrderProductRepository repository) {
-        this.repository = repository;
+    public OrderProductService(OrderProductRepository orderProductRepo) {
+        this.orderProductRepo = orderProductRepo;
     }
 
-    public List<OrderProduct> getAll() {
-        return repository.findAll();
+    public List<OrderProduct> getAllOrderProducts() {
+        return orderProductRepo.findAll();
     }
 
     public List<OrderProduct> getByOrderId(Long id) {
-        Optional<List<OrderProduct>> opt = repository.findByOrderId(id);
+        Optional<List<OrderProduct>> opt = orderProductRepo.findByOrderId(id);
 
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Found no order_product with this Order ID");
