@@ -95,4 +95,15 @@ public class ProductService {
 
         product.setUpdatedAt(new Date());
     }
+
+    public List<Product> getByName(String name) {
+        if (name == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase());
+        if (opt.isEmpty() || opt.get().isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return opt.get();
+    }
 }

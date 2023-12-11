@@ -1,6 +1,7 @@
 package com.asm.estore.controller;
 
 import com.asm.estore.dto.AddProductDTO;
+import com.asm.estore.dto.SearchProductDTO;
 import com.asm.estore.dto.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.service.ProductService;
@@ -22,6 +23,11 @@ public class ProductController {
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAll();
+    }
+
+    @GetMapping("get-by-name")
+    List<Product> getProductsByName(@RequestBody SearchProductDTO dto) {
+        return productService.getByName(dto.getName());
     }
 
     @PostMapping("add")
