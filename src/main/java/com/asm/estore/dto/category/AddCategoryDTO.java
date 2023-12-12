@@ -1,4 +1,4 @@
-package com.asm.estore.dto;
+package com.asm.estore.dto.category;
 
 import lombok.Data;
 

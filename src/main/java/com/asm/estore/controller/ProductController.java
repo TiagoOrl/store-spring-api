@@ -1,8 +1,8 @@
 package com.asm.estore.controller;
 
-import com.asm.estore.dto.AddProductDTO;
-import com.asm.estore.dto.SearchProductDTO;
-import com.asm.estore.dto.UpdateProductDTO;
+import com.asm.estore.dto.product.AddProductDTO;
+import com.asm.estore.dto.product.SearchProductDTO;
+import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

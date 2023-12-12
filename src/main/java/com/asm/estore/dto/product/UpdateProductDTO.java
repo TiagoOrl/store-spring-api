@@ -1,4 +1,4 @@
-package com.asm.estore.dto;
+package com.asm.estore.dto.product;
 
 import lombok.Data;
 
@@ -11,5 +11,5 @@ public class UpdateProductDTO {
     private String description;
     private BigDecimal unitPrice;
     private Boolean active;
-    private Integer stockCount;
+    private Integer unitsInStock;
 }

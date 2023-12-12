@@ -1,6 +1,7 @@
 package com.asm.estore.controller;
 
-import com.asm.estore.dto.AddCategoryDTO;
+import com.asm.estore.dto.category.AddCategoryDTO;
+import com.asm.estore.dto.category.CategoryDTO;
 import com.asm.estore.entity.ProductCategory;
 import com.asm.estore.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<ProductCategory> getAllCategories() {
+    public List<CategoryDTO> getAllCategories() {
         return service.getAll();
     }
 
