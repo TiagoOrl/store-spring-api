@@ -1,6 +1,8 @@
 package com.asm.estore.controller;
 
 
+import com.asm.estore.dto.client.ClientDTO;
+import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
 import com.asm.estore.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,11 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getAllClients() {
-        return service.getAll();
+    public List<ClientDTO> getAllClients() {
+        return service.getAllClients();
+    }
+
+    @GetMapping("address") List<Address> getAllAddresses() {
+        return service.getAllAddresses();
     }
 }

@@ -39,13 +39,12 @@ public class Client {
     private Date createdAt;
 
     @Column(name="updated_at")
-    @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToOne(optional=false)
-    @JoinColumn(
-            name="fk_client_id", unique=true, nullable=false, updatable=false)
-    private Address address;
+//    @OneToOne(optional=false)
+//    @JoinColumn(
+//            name="fk_client_id", unique=true, nullable=false, updatable=false)
+//    private Address address;
 
     // non owning side of relationship
     //One Client to MANY Orders

@@ -1,7 +1,7 @@
 package com.asm.estore.service;
 
-import com.asm.estore.dto.AddProductDTO;
-import com.asm.estore.dto.UpdateProductDTO;
+import com.asm.estore.dto.product.AddProductDTO;
+import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -90,9 +90,20 @@ public class ProductService {
         if (dto.getActive() != null)
             product.setActive(dto.getActive());
 
-        if (dto.getStockCount() != null)
-            product.setUnitsInStock(dto.getStockCount());
+        if (dto.getUnitsInStock() != null)
+            product.setUnitsInStock(dto.getUnitsInStock());
 
         product.setUpdatedAt(new Date());
+    }
+
+    public List<Product> getByName(String name) {
+        if (name == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase());
+        if (opt.isEmpty() || opt.get().isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return opt.get();
     }
 }
