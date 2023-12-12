@@ -100,7 +100,7 @@ public class ProductService {
         if (name == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase());
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip());
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
