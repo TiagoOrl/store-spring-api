@@ -1,6 +1,7 @@
 package com.asm.estore.controller;
 
 import com.asm.estore.dto.product.AddProductDTO;
+import com.asm.estore.dto.product.ProductDTO;
 import com.asm.estore.dto.product.SearchProductDTO;
 import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
@@ -21,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAll();
     }
 

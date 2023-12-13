@@ -9,7 +9,7 @@ public class UpdateProductDTO {
 
     private String name;
     private String description;
-    private BigDecimal unitPrice;
+    private Float unitPrice;
     private Boolean active;
     private Integer unitsInStock;
 }

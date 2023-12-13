@@ -2,23 +2,25 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "order_main")
-@Data
+@Data @NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private Integer id;
 
     @Column(name = "total_sum")
-    private int totalSum;
+    private Float totalSum;
 
     @Column(name="created_at")
     @CreationTimestamp
@@ -28,8 +30,10 @@ public class Order {
     @UpdateTimestamp
     private Date updatedAt;
 
+    private Boolean finalized;
+
     @Column(name = "fk_client_id")
-    private Integer clientId;
+    private Long clientId;
 
 
     @ManyToMany
@@ -39,4 +43,10 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "fk_product_id")
     )
     private Set<Product> products;
+
+    public Order(Long clientId, Float initialSum) {
+        this.clientId = clientId;
+        this.totalSum = initialSum;
+        this.finalized = false;
+    }
 }

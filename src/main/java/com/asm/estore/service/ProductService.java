@@ -1,10 +1,12 @@
 package com.asm.estore.service;
 
 import com.asm.estore.dto.product.AddProductDTO;
+import com.asm.estore.dto.product.ProductDTO;
 import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ import java.util.Optional;
 @Component // annotation for DI
 public class ProductService {
     private final ProductRepository repository;
+    @Autowired
+    private ModelMapper mapper;
 
 
     @Autowired // constructor annotation for dependency injection
@@ -24,8 +28,10 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public List<Product> getAll() {
-        return repository.findAll();
+    public List<ProductDTO> getAll() {
+        return repository.findAll().stream().map(
+                p -> mapper.map(p, ProductDTO.class)
+        ).toList();
     }
 
     public void addProduct(AddProductDTO dto) {
@@ -100,7 +106,7 @@ public class ProductService {
         if (name == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase());
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip());
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 

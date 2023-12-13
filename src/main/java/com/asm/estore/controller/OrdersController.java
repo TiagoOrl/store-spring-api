@@ -1,15 +1,14 @@
 package com.asm.estore.controller;
 
 
+import com.asm.estore.dto.order.OrderDTO;
+import com.asm.estore.dto.order.OrderProductDTO;
 import com.asm.estore.entity.Order;
 import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.service.OrderProductService;
 import com.asm.estore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,16 +30,28 @@ public class OrdersController {
         return orderService.getAll();
     }
 
-    @GetMapping(path = "product")
+    @GetMapping("client/{clientId}")
+    public List<OrderDTO> getOrdersByClientId(@PathVariable("clientId") Long clientId) {
+        return orderService.getAllByClientId(clientId);
+    }
+
+    @PostMapping(path = "create/{clientId}")
+    public void createOrderByClientId(@PathVariable("clientId") Long id) {
+        orderService.createNewOrder(id);
+    }
+
+    @GetMapping(path = "order_product")
     public List<OrderProduct> getAllOrderProducts() {
         return orderProductService.getAllOrderProducts();
     }
 
-    @GetMapping(path = "product/{id}")
-    public List<OrderProduct> getAllOrderProductsById(
-            @PathVariable("id") Long id
-    ) {
+    @GetMapping(path = "order_product/{id}")
+    public List<OrderProduct> getOrderProductsById(@PathVariable("id") Long id) {
         return orderProductService.getByOrderId(id);
     }
 
+    @PostMapping(path = "order_product/add")
+    public void addProductToOrder(@RequestBody OrderProductDTO dto) {
+        orderProductService.addProductToOrder(dto);
+    }
 }

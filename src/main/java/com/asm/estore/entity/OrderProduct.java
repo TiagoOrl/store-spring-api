@@ -2,22 +2,29 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "order_product")
-@Data
+@Data @NoArgsConstructor
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private Long id;
 
     @Column
-    private int amount;
+    private Integer amount;
 
     @Column(name = "fk_order_id")
-    private int fkOrderId;
+    private Long fkOrderId;
 
     @Column(name = "fk_product_id")
-    private int fkProductId;
+    private Long fkProductId;
+
+    public OrderProduct(Integer amount, Long fkOrderId, Long fkProductId) {
+        this.amount = amount;
+        this.fkOrderId = fkOrderId;
+        this.fkProductId = fkProductId;
+    }
 }
