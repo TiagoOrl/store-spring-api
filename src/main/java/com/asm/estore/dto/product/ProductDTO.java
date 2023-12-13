@@ -2,16 +2,18 @@ package com.asm.estore.dto.product;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
-public class AddProductDTO {
-
+public class ProductDTO {
+    private Long id;
     private String name;
     private String description;
     private Float unitPrice;
     private String imageUrl;
-    private Boolean active;
-    private Integer unitsInStock;
+    private boolean active;
+    private int unitsInStock;
+    private Date createdAt;
+    private Date updatedAt;
     private Integer categoryId;
 }

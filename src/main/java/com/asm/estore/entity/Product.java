@@ -26,7 +26,7 @@ public class Product {
     private String description;
 
     @Column(name="unit_price")
-    private BigDecimal unitPrice;
+    private Float unitPrice;
 
     @Column(name="image_url")
     private String imageUrl;
@@ -42,7 +42,6 @@ public class Product {
     private Date createdAt;
 
     @Column(name="updated_at")
-    @UpdateTimestamp
     private Date updatedAt;
 
     @Column(name = "fk_category_id")
@@ -54,7 +53,7 @@ public class Product {
     public Product(
         String name,
         String description,
-        BigDecimal unitPrice,
+        Float unitPrice,
         Integer unitsInStock,
         Boolean active,
         Integer categoryId

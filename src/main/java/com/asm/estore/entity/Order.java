@@ -20,7 +20,7 @@ public class Order {
     private Integer id;
 
     @Column(name = "total_sum")
-    private BigDecimal totalSum;
+    private Float totalSum;
 
     @Column(name="created_at")
     @CreationTimestamp
@@ -44,7 +44,7 @@ public class Order {
     )
     private Set<Product> products;
 
-    public Order(Long clientId, BigDecimal initialSum) {
+    public Order(Long clientId, Float initialSum) {
         this.clientId = clientId;
         this.totalSum = initialSum;
         this.finalized = false;

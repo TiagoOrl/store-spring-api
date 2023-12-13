@@ -42,10 +42,10 @@ public class OrderService {
         opt.ifPresent(orders -> orders.forEach(
                 order -> {
                     if (!order.getFinalized())
-                        throw new ResponseStatusException(HttpStatus.CONFLICT);
+                        throw new ResponseStatusException(HttpStatus.CONFLICT, "Client has an Order not finalized if Id: " + order.getId());
                 }
         ));
-        Order order = new Order(clientId, new BigDecimal("0.00"));
+        Order order = new Order(clientId, 0.00F);
         repository.save(order);
     }
 }

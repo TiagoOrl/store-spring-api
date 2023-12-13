@@ -2,6 +2,7 @@ package com.asm.estore.controller;
 
 
 import com.asm.estore.dto.order.OrderDTO;
+import com.asm.estore.dto.order.OrderProductDTO;
 import com.asm.estore.entity.Order;
 import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.service.OrderProductService;
@@ -39,13 +40,18 @@ public class OrdersController {
         orderService.createNewOrder(id);
     }
 
-    @GetMapping(path = "product")
+    @GetMapping(path = "order_product")
     public List<OrderProduct> getAllOrderProducts() {
         return orderProductService.getAllOrderProducts();
     }
 
-    @GetMapping(path = "product/{id}")
+    @GetMapping(path = "order_product/{id}")
     public List<OrderProduct> getOrderProductsById(@PathVariable("id") Long id) {
         return orderProductService.getByOrderId(id);
+    }
+
+    @PostMapping(path = "order_product/add")
+    public void addProductToOrder(@RequestBody OrderProductDTO dto) {
+        orderProductService.addProductToOrder(dto);
     }
 }
