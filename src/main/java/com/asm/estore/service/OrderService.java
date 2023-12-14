@@ -2,6 +2,7 @@ package com.asm.estore.service;
 
 import com.asm.estore.dto.order.OrderDTO;
 import com.asm.estore.entity.Order;
+import com.asm.estore.repository.ClientRepository;
 import com.asm.estore.repository.OrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,14 @@ import java.util.Optional;
 @Component
 public class OrderService {
     private final OrderRepository repository;
+    private final ClientRepository clientRepository;
     @Autowired
     private ModelMapper mapper;
 
     @Autowired
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrderRepository repository, ClientRepository clientRepository) {
         this.repository = repository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Order> getAll() {
@@ -38,6 +41,10 @@ public class OrderService {
     }
 
     public void createNewOrder(Long clientId) {
+
+        if (clientRepository.findById(clientId).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Client Id: " + clientId + " doesn't exists");
+
         Optional<List<Order>> opt =  repository.findAllClientsOrders(clientId);
         opt.ifPresent(orders -> orders.forEach(
                 order -> {
@@ -46,6 +53,10 @@ public class OrderService {
                 }
         ));
         Order order = new Order(clientId, 0.00F);
-        repository.save(order);
+        try {
+            repository.save(order);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.toString());
+        }
     }
 }

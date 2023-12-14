@@ -5,6 +5,7 @@ import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.repository.OrderProductRepository;
 import com.asm.estore.repository.OrderRepository;
 import com.asm.estore.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,7 @@ public class OrderProductService {
      * Adds a Product to an existing Order
      * @param dto Contains the OrderId and ProductId
      */
+    @Transactional
     public void addOrderProduct(OrderProductDTO dto) {
         if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
