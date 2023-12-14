@@ -40,14 +40,19 @@ public class OrdersController {
         orderService.createNewOrder(id);
     }
 
+    @PutMapping(path = "finalize/{orderId}")
+    public void finalizeOrder(@PathVariable("orderId") Long orderId) {
+        orderService.finalizeOrder(orderId);
+    }
+
     @GetMapping(path = "order_product")
     public List<OrderProduct> getAllOrderProducts() {
         return orderProductService.getAllOrderProducts();
     }
 
     @GetMapping(path = "order_product/{id}")
-    public List<OrderProduct> getOrderProductsById(@PathVariable("id") Long id) {
-        return orderProductService.getByOrderId(id);
+    public List<OrderProductDTO> getOrderProductsById(@PathVariable("id") Long id) {
+        return orderProductService.getAllByOrderId(id);
     }
 
     @PostMapping(path = "order_product/add")
