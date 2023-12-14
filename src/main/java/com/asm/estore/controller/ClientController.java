@@ -1,6 +1,7 @@
 package com.asm.estore.controller;
 
 
+import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.client.ClientDTO;
 import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
@@ -27,7 +28,7 @@ public class ClientController {
         return service.getAllClients();
     }
 
-    @GetMapping("address") List<Address> getAllAddresses() {
+    @GetMapping("address") List<AddressDTO> getAllAddresses() {
         return service.getAllAddresses();
     }
 }

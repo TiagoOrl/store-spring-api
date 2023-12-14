@@ -15,7 +15,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "street")
     private String street;
@@ -24,7 +24,7 @@ public class Address {
     private String neighborhood;
 
     @Column(name = "number")
-    private int number;
+    private Integer number;
 
     @Column(name = "city")
     private String city;
@@ -43,6 +43,7 @@ public class Address {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @Column(name = "fk_client_id")
-    private Integer fk_client_id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_client_id", referencedColumnName = "id", unique=true, nullable=false, updatable=false)
+    private Client client;
 }
