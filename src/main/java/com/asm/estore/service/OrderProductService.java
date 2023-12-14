@@ -2,6 +2,7 @@ package com.asm.estore.service;
 
 import com.asm.estore.dto.order.OrderProductDTO;
 import com.asm.estore.entity.OrderProduct;
+import com.asm.estore.entity.Product;
 import com.asm.estore.repository.OrderProductRepository;
 import com.asm.estore.repository.OrderRepository;
 import com.asm.estore.repository.ProductRepository;
@@ -38,13 +39,20 @@ public class OrderProductService {
         return orderProductRepository.findAll();
     }
 
-    public List<OrderProduct> getByOrderId(Long id) {
-        Optional<List<OrderProduct>> opt = orderProductRepository.findByOrderId(id);
+    public List<OrderProductDTO> getAllByOrderId(Long orderId) {
+        Optional<List<OrderProduct>> optOrderProducts = orderProductRepository.findAllByOrderId(orderId);
 
-        if (opt.isEmpty() || opt.get().isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Found no order_product with this Order ID");
+        if (optOrderProducts.isEmpty() || optOrderProducts.get().isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No OrderProduct found with this OrderId");
 
-        return opt.get();
+        return optOrderProducts.get().stream().map(
+                orderProduct -> {
+                    OrderProductDTO dto = mapper.map(orderProduct, OrderProductDTO.class);
+                    Product product = productRepository.findById(orderProduct.getFkProductId()).get();
+                    dto.setProductName(product.getName());
+                    return dto;
+                }
+        ).toList();
 
     }
 

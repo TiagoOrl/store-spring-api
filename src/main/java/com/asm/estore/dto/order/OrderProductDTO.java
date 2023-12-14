@@ -7,4 +7,5 @@ public class OrderProductDTO {
     private Integer amount;
     private Long fkOrderId;
     private Long fkProductId;
+    private String productName;
 }

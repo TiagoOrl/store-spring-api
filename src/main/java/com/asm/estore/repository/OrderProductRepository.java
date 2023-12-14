@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
     @Query("SELECT op FROM OrderProduct op WHERE op.fkOrderId = ?1")
-    Optional<List<OrderProduct>> findByOrderId(Long id);
+    Optional<List<OrderProduct>> findAllByOrderId(Long id);
 
     @Query("SELECT op FROM OrderProduct op WHERE op.fkOrderId = ?1 AND op.fkProductId = ?2")
     Optional<OrderProduct> findOrderProductByOrderIdProductId(Long orderId, Long productId);
