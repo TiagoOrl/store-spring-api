@@ -47,6 +47,10 @@ public class OrderProductService {
 
     }
 
+    /**
+     * Adds a Product to an existing Order
+     * @param dto Contains the OrderId and ProductId
+     */
     public void addOrderProduct(OrderProductDTO dto) {
         if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
