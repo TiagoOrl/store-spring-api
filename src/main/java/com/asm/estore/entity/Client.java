@@ -41,10 +41,8 @@ public class Client {
     @Column(name="updated_at")
     private Date updatedAt;
 
-//    @OneToOne(optional=false)
-//    @JoinColumn(
-//            name="fk_client_id", unique=true, nullable=false, updatable=false)
-//    private Address address;
+    @OneToOne(mappedBy = "client")
+    private Address address;
 
     // non owning side of relationship
     //One Client to MANY Orders

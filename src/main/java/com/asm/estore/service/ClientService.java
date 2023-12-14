@@ -1,8 +1,8 @@
 package com.asm.estore.service;
 
+import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.client.ClientDTO;
 import com.asm.estore.entity.Address;
-import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
 import org.modelmapper.ModelMapper;
@@ -13,24 +13,30 @@ import java.util.List;
 
 @Component
 public class ClientService {
-    private final ClientRepository repository;
+    private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
     @Autowired
     private ModelMapper mapper;
 
     @Autowired
     public ClientService(ClientRepository repository, AddressRepository addressRepository) {
-        this.repository = repository;
+        this.clientRepository = repository;
         this.addressRepository = addressRepository;
     }
 
     public List<ClientDTO> getAllClients() {
-        return repository.findAll().stream().map(
+        return clientRepository.findAll().stream().map(
                 client -> mapper.map(client, ClientDTO.class)
         ).toList();
     }
 
-    public List<Address> getAllAddresses() {
-        return addressRepository.findAll();
+    public List<AddressDTO> getAllAddresses() {
+        return addressRepository.findAll().stream().map(
+                address -> {
+                    AddressDTO dto = mapper.map(address, AddressDTO.class);
+                    dto.setClientsName(address.getClient().getFirstName() + " " + address.getClient().getSecondName());
+                    return dto;
+                }
+        ).toList();
     }
 }
