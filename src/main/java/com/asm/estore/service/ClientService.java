@@ -2,6 +2,7 @@ package com.asm.estore.service;
 
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.client.ClientDTO;
+import com.asm.estore.dto.order.OrderDTO;
 import com.asm.estore.entity.Address;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
@@ -26,7 +27,15 @@ public class ClientService {
 
     public List<ClientDTO> getAllClients() {
         return clientRepository.findAll().stream().map(
-                client -> mapper.map(client, ClientDTO.class)
+                client -> {
+                    ClientDTO clientDTO = mapper.map(client, ClientDTO.class);
+
+                    clientDTO.setOrders(client.getOrders().stream().map(
+                            order -> mapper.map(order, OrderDTO.class)
+                    ).toList());
+
+                    return clientDTO;
+                }
         ).toList();
     }
 
