@@ -52,6 +52,6 @@ public class OrdersController {
 
     @PostMapping(path = "order_product/add")
     public void addProductToOrder(@RequestBody OrderProductDTO dto) {
-        orderProductService.addProductToOrder(dto);
+        orderProductService.addOrderProduct(dto);
     }
 }

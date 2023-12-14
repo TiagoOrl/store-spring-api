@@ -47,7 +47,12 @@ public class Product {
     @Column(name = "fk_category_id")
     private Integer categoryId;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "fk_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_product_id")
+    )
     private Set<Order> orders;
 
     public Product(
