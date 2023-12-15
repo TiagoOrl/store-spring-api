@@ -161,6 +161,9 @@ public class OrderProductService {
 
         orderRepository.findById(dto.getFkOrderId()).ifPresentOrElse(
                 order -> {
+                    if (order.getFinalized())
+                        throw new ResponseStatusException(HttpStatus.CONFLICT, "Order already finalized");
+
                     Float newTotalSum = order.getTotalSum() - orderProduct.getUnitPrice() * orderProduct.getAmount();
                     order.setTotalSum(newTotalSum);
                 },
