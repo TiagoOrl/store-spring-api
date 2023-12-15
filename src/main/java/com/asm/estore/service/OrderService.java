@@ -51,7 +51,7 @@ public class OrderService {
         ).toList();
     }
 
-    public void createNewOrder(Long clientId) {
+    public OrderDTO createNewOrder(Long clientId) {
 
         if (clientRepository.findById(clientId).isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Client Id: " + clientId + " doesn't exists");
@@ -60,38 +60,53 @@ public class OrderService {
         opt.ifPresent(orders -> orders.forEach(
                 order -> {
                     if (!order.getFinalized())
-                        throw new ResponseStatusException(HttpStatus.CONFLICT, "Client has an Order not finalized if Id: " + order.getId());
+                        throw new ResponseStatusException(HttpStatus.CONFLICT, "Client has an Order not finalized of Id: " + order.getId());
                 }
         ));
-        Order order = new Order(clientId, 0.00F);
+
+        Order order = new Order(clientId);
+
         try {
             orderRepository.save(order);
+            return mapper.map(order, OrderDTO.class);
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.toString());
         }
     }
 
-    @Transactional
-    public void finalizeOrder(Long orderId) {
-        orderRepository.findById(orderId).ifPresentOrElse(
-            order -> {
-                if (order.getFinalized())
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Order already finalized");
-                
-                order.getProducts().forEach(product -> {
-                    orderProductRepository.findOrderProductByOrderIdProductId(orderId, product.getId()).ifPresent(
-                        orderProduct -> {
-                            product.setUnitsInStock(
-                                    product.getUnitsInStock() - orderProduct.getAmount()
-                            );
-                        }
-                    );
-                });
-                order.setFinalized(true);
+    public Order getByOrderId(Long id) {
+        Optional<Order> optOrder = orderRepository.findById(id);
+        if (optOrder.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No order found with this Id");
 
-            }, () -> {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
-            }
-        );
+        return optOrder.get();
+    }
+
+    @Transactional
+    public OrderDTO finalizeOrder(Long orderId) {
+        Optional<Order> optOrder = orderRepository.findById(orderId);
+        if (optOrder.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
+
+        Order order = optOrder.get();
+
+        if (order.getFinalized())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Order already finalized");
+
+        if (order.getProducts().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This order has no products added.");
+
+        order.getProducts().forEach(product -> {
+            orderProductRepository.findOrderProductByOrderIdProductId(orderId, product.getId()).ifPresent(
+                    orderProduct -> {
+                        product.setUnitsInStock(
+                                product.getUnitsInStock() - orderProduct.getAmount()
+                        );
+                    }
+            );
+        });
+
+        order.setFinalized(true);
+        return mapper.map(order, OrderDTO.class);
     }
 }

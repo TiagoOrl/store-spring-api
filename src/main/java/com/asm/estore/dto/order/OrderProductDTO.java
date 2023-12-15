@@ -8,4 +8,5 @@ public class OrderProductDTO {
     private Long fkOrderId;
     private Long fkProductId;
     private String productName;
+    private Float unitPrice;
 }

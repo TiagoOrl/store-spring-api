@@ -16,6 +16,12 @@ public class OrderProduct {
     @Column
     private Integer amount;
 
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "unit_price")
+    private Float unitPrice;
+
     @Column(name = "fk_order_id")
     private Long fkOrderId;
 
