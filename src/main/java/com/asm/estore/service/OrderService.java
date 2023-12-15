@@ -51,7 +51,7 @@ public class OrderService {
         ).toList();
     }
 
-    public void createNewOrder(Long clientId) {
+    public OrderDTO createNewOrder(Long clientId) {
 
         if (clientRepository.findById(clientId).isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Client Id: " + clientId + " doesn't exists");
@@ -63,9 +63,12 @@ public class OrderService {
                         throw new ResponseStatusException(HttpStatus.CONFLICT, "Client has an Order not finalized of Id: " + order.getId());
                 }
         ));
-        Order order = new Order(clientId, 0.00F);
+
+        Order order = new Order(clientId);
+
         try {
             orderRepository.save(order);
+            return mapper.map(order, OrderDTO.class);
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.toString());
         }

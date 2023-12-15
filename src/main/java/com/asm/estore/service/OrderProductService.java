@@ -1,6 +1,7 @@
 package com.asm.estore.service;
 
 import com.asm.estore.dto.order.OrderProductDTO;
+import com.asm.estore.entity.Order;
 import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.OrderProductRepository;
@@ -56,7 +57,7 @@ public class OrderProductService {
      * @param dto Contains the OrderId and ProductId
      */
     @Transactional
-    public void addOrderProduct(OrderProductDTO dto) {
+    public OrderProductDTO addOrderProduct(OrderProductDTO dto) {
         if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
         }
@@ -75,18 +76,25 @@ public class OrderProductService {
                             " has already been added to this Order Id: " + dto.getFkOrderId()
                         );
                 } else {
-                    OrderProduct orderProduct = mapper.map(dto, OrderProduct.class);
+                    var newOrderProduct = mapper.map(dto, OrderProduct.class);
                     productRepository.findById(dto.getFkProductId()).ifPresentOrElse(
                             (product) -> {
+                                if (dto.getAmount() > product.getUnitsInStock())
+                                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                            "This product order: " + product.getName() +
+                                            " amount requested: " + dto.getAmount() +
+                                            ", exceeds the stock count: " + product.getUnitsInStock()
+                                    );
+
                                 order.setTotalSum(
                                         order.getTotalSum() +
                                         product.getUnitPrice() *
                                         dto.getAmount()
                                 );
 
-                                orderProduct.setProductName(product.getName());
-
-                                orderProductRepository.save(orderProduct);
+                                newOrderProduct.setProductName(product.getName());
+                                newOrderProduct.setUnitPrice(product.getUnitPrice());
+                                orderProductRepository.save(newOrderProduct);
                             },  () -> {
                                 throw new ResponseStatusException(HttpStatus.CONFLICT, "This Product of Id: " + dto.getFkProductId() +  " doesn't exists in DB");
                             }
@@ -96,6 +104,46 @@ public class OrderProductService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order of id: "+ dto.getFkOrderId() + " Not found");
             }
         );
+        return dto;
+    }
 
+    @Transactional
+    public OrderProductDTO changeAmount(OrderProductDTO dto) {
+        if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
+        }
+        if (dto.getAmount() < 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Choose a value > 0");
+
+        Optional<OrderProduct> optOrderProduct =
+                orderProductRepository.findOrderProductByOrderIdProductId(dto.getFkOrderId(), dto.getFkProductId());
+
+        Optional<Product> optProduct = productRepository.findById(dto.getFkProductId());
+        Optional<Order> optOrder = orderRepository.findById(dto.getFkOrderId());
+
+        if (optOrderProduct.isEmpty() || optOrder.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order of id: "+ dto.getFkOrderId() + " Not found.");
+        if (optProduct.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product of id: " + dto.getFkProductId() + " Not found.");
+
+        Product product = optProduct.get();
+        Order order = optOrder.get();
+        OrderProduct orderProduct = optOrderProduct.get();
+
+        if (order.getFinalized())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Order of id: " + dto.getFkOrderId() + " already finalized");
+
+        if (dto.getAmount() > product.getUnitsInStock())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                "This product order: " + product.getName() +
+                " amount requested: " + dto.getAmount() +
+                "exceeds the stock count: " + product.getUnitsInStock()
+            );
+
+        float deductedSum = order.getTotalSum() - orderProduct.getAmount() * orderProduct.getUnitPrice();
+        orderProduct.setAmount(dto.getAmount());
+        order.setTotalSum(deductedSum + dto.getAmount() * orderProduct.getUnitPrice());
+
+        return mapper.map(orderProduct, OrderProductDTO.class);
     }
 }

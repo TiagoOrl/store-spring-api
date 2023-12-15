@@ -3,8 +3,6 @@ package com.asm.estore.controller;
 
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.client.ClientDTO;
-import com.asm.estore.entity.Address;
-import com.asm.estore.entity.Client;
 import com.asm.estore.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

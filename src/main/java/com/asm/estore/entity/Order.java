@@ -43,9 +43,9 @@ public class Order {
     )
     private Set<Product> products;
 
-    public Order(Long clientId, Float initialSum) {
+    public Order(Long clientId) {
         this.clientId = clientId;
-        this.totalSum = initialSum;
+        this.totalSum = 0.00F;
         this.finalized = false;
     }
 }

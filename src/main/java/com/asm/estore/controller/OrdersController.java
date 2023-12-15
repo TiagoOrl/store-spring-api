@@ -15,13 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/order")
 public class OrdersController {
-
-    private final OrderProductService orderProductService;
     private final OrderService orderService;
 
     @Autowired
-    public OrdersController(OrderProductService service, OrderService orderService) {
-        this.orderProductService = service;
+    public OrdersController(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -41,8 +38,8 @@ public class OrdersController {
     }
 
     @PostMapping(path = "create/{clientId}")
-    public void createOrderByClientId(@PathVariable("clientId") Long id) {
-        orderService.createNewOrder(id);
+    public OrderDTO createOrderByClientId(@PathVariable("clientId") Long id) {
+        return orderService.createNewOrder(id);
     }
 
     @PutMapping(path = "finalize/{orderId}")
@@ -50,18 +47,4 @@ public class OrdersController {
         return orderService.finalizeOrder(orderId);
     }
 
-    @GetMapping(path = "order_product")
-    public List<OrderProduct> getAllOrderProducts() {
-        return orderProductService.getAllOrderProducts();
-    }
-
-    @GetMapping(path = "order_product/{id}")
-    public List<OrderProductDTO> getOrderProductsById(@PathVariable("id") Long id) {
-        return orderProductService.getAllByOrderId(id);
-    }
-
-    @PostMapping(path = "order_product/add")
-    public void addProductToOrder(@RequestBody OrderProductDTO dto) {
-        orderProductService.addOrderProduct(dto);
-    }
 }
