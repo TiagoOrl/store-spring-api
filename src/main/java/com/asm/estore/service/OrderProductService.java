@@ -46,12 +46,7 @@ public class OrderProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No OrderProduct found with this OrderId");
 
         return optOrderProducts.get().stream().map(
-                orderProduct -> {
-                    OrderProductDTO dto = mapper.map(orderProduct, OrderProductDTO.class);
-                    Product product = productRepository.findById(orderProduct.getFkProductId()).get();
-                    dto.setProductName(product.getName());
-                    return dto;
-                }
+                orderProduct -> mapper.map(orderProduct, OrderProductDTO.class)
         ).toList();
 
     }
@@ -88,6 +83,8 @@ public class OrderProductService {
                                         product.getUnitPrice() *
                                         dto.getAmount()
                                 );
+
+                                orderProduct.setProductName(product.getName());
 
                                 orderProductRepository.save(orderProduct);
                             },  () -> {

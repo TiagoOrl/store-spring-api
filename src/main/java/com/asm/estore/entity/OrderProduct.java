@@ -16,6 +16,9 @@ public class OrderProduct {
     @Column
     private Integer amount;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "fk_order_id")
     private Long fkOrderId;
 

@@ -35,14 +35,19 @@ public class OrdersController {
         return orderService.getAllByClientId(clientId);
     }
 
+    @GetMapping("{orderId}")
+    public Order getOrderById(@PathVariable("orderId") Long id) {
+        return orderService.getByOrderId(id);
+    }
+
     @PostMapping(path = "create/{clientId}")
     public void createOrderByClientId(@PathVariable("clientId") Long id) {
         orderService.createNewOrder(id);
     }
 
     @PutMapping(path = "finalize/{orderId}")
-    public void finalizeOrder(@PathVariable("orderId") Long orderId) {
-        orderService.finalizeOrder(orderId);
+    public OrderDTO finalizeOrder(@PathVariable("orderId") Long orderId) {
+        return orderService.finalizeOrder(orderId);
     }
 
     @GetMapping(path = "order_product")

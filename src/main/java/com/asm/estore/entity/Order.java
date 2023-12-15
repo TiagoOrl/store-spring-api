@@ -27,7 +27,6 @@ public class Order {
     private Date createdAt;
 
     @Column(name="updated_at")
-    @UpdateTimestamp
     private Date updatedAt;
 
     private Boolean finalized;
