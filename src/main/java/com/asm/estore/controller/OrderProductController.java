@@ -38,4 +38,9 @@ public class OrderProductController {
     public OrderProductDTO changeProductAmount(@RequestBody OrderProductDTO dto) {
         return orderProductService.changeAmount(dto);
     }
+
+    @DeleteMapping(path = "delete")
+    public OrderProductDTO deleteOrderProduct(@RequestBody OrderProductDTO dto) {
+        return orderProductService.deleteByOrderIdProductId(dto);
+    }
 }

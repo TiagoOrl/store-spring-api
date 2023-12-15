@@ -146,4 +146,30 @@ public class OrderProductService {
 
         return mapper.map(orderProduct, OrderProductDTO.class);
     }
+
+    @Transactional
+    public OrderProductDTO deleteByOrderIdProductId(OrderProductDTO dto) {
+
+        if (dto.getFkOrderId() == null || dto.getFkProductId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing order id or product id");
+
+        var optOrderProduct = orderProductRepository.findOrderProductByOrderIdProductId(dto.getFkOrderId(), dto.getFkProductId());
+        if (optOrderProduct.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order product not found");
+
+        OrderProduct orderProduct = optOrderProduct.get();
+
+        orderRepository.findById(dto.getFkOrderId()).ifPresentOrElse(
+                order -> {
+                    Float newTotalSum = order.getTotalSum() - orderProduct.getUnitPrice() * orderProduct.getAmount();
+                    order.setTotalSum(newTotalSum);
+                },
+                () -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order not found");
+                }
+        );
+
+        orderProductRepository.delete(orderProduct);
+        return mapper.map(orderProduct, OrderProductDTO.class);
+    }
 }
