@@ -1,17 +1,13 @@
 package com.asm.estore.dto.client;
 
-import com.asm.estore.dto.order.OrderDTO;
-
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.Getter;
 
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class ClientDTO {
+public class AllClientsDTO {
     private int id;
 
     @NotBlank(message = "first name is required")
@@ -38,5 +34,4 @@ public class ClientDTO {
 
     private Date createdAt;
     private Date updatedAt;
-    private List<OrderDTO> orders;
 }
