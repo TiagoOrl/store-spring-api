@@ -2,6 +2,7 @@ package com.asm.estore.service;
 
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.address.CreateAddressDTO;
+import com.asm.estore.dto.address.UpdateAddressDTO;
 import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
@@ -132,6 +133,35 @@ public class ClientService {
                 }
         );
 
+
+        return dto;
+    }
+
+    @Transactional
+    public UpdateAddressDTO updateAddressByClientId(Long clientId, UpdateAddressDTO dto) {
+        mainValidator.validateObject(dto);
+
+        addressRepository.getAddressByClientId(clientId).ifPresentOrElse(
+                address -> {
+                    if (dto.getStreet() != null)
+                        address.setStreet(dto.getStreet());
+                    if (dto.getNeighborhood() != null)
+                        address.setNeighborhood(dto.getNeighborhood());
+                    if (dto.getNumber() != null)
+                        address.setNumber(dto.getNumber());
+                    if (dto.getCity() != null)
+                        address.setCity(dto.getCity());
+                    if (dto.getStateOrCounty() != null)
+                        address.setStateOrCounty(dto.getStateOrCounty());
+                    if (dto.getCountry() != null)
+                        address.setCountry(dto.getCountry());
+
+                    address.setUpdatedAt(new Date());
+                },
+                () -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Address for this Client Id not found");
+                }
+        );
 
         return dto;
     }
