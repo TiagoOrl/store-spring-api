@@ -2,12 +2,12 @@ package com.asm.estore.controller;
 
 
 import com.asm.estore.dto.address.AddressDTO;
-import com.asm.estore.dto.client.ClientDTO;
+import com.asm.estore.dto.client.AllClientsDTO;
+import com.asm.estore.dto.client.CreateClientDTO;
+import com.asm.estore.dto.client.SingleClientDTO;
 import com.asm.estore.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,11 +22,22 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<ClientDTO> getAllClients() {
+    public List<AllClientsDTO> getAllClients() {
         return service.getAllClients();
     }
 
-    @GetMapping("address") List<AddressDTO> getAllAddresses() {
+    @GetMapping("{clientId}")
+    public SingleClientDTO getClientById(@PathVariable("clientId") Long clientId) {
+        return service.getById(clientId);
+    }
+
+    @GetMapping("address")
+    public List<AddressDTO> getAllAddresses() {
         return service.getAllAddresses();
+    }
+
+    @PostMapping("create")
+    public CreateClientDTO createClient(@RequestBody CreateClientDTO dto) {
+        return service.createClient(dto);
     }
 }
