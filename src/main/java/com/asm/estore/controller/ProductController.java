@@ -32,8 +32,8 @@ public class ProductController {
     }
 
     @PostMapping("add")
-    public void addProduct(@RequestBody AddProductDTO product) {
-        productService.addProduct(product);
+    public AddProductDTO addProduct(@RequestBody AddProductDTO product) {
+        return productService.addProduct(product);
     }
 
     @DeleteMapping(path = "{productId}")
@@ -42,10 +42,10 @@ public class ProductController {
     }
 
     @PutMapping(path = "{productId}")
-    public void updateProductById(
-            @PathVariable("productId") Long id,
+    public UpdateProductDTO updateProductById(
+            @PathVariable("productId") Long productId,
             @RequestBody UpdateProductDTO dto
     ) {
-        productService.updateProductById(id, dto);
+        return productService.updateProductById(productId, dto);
     }
 }

@@ -4,7 +4,9 @@ import com.asm.estore.dto.product.AddProductDTO;
 import com.asm.estore.dto.product.ProductDTO;
 import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
+import com.asm.estore.repository.ProductCategoryRepository;
 import com.asm.estore.repository.ProductRepository;
+import com.asm.estore.validation.MainValidator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,20 @@ import java.util.Optional;
 @Component // annotation for DI
 public class ProductService {
     private final ProductRepository repository;
+    private final ProductCategoryRepository categoryRepository;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private MainValidator mainValidator;
 
 
     @Autowired // constructor annotation for dependency injection
-    public ProductService(ProductRepository repository) {
+    public ProductService(
+            ProductRepository repository,
+            ProductCategoryRepository categoryRepository
+    ) {
         this.repository = repository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductDTO> getAll() {
@@ -34,32 +43,25 @@ public class ProductService {
         ).toList();
     }
 
-    public void addProduct(AddProductDTO dto) {
+    public AddProductDTO addProduct(AddProductDTO dto) {
+        mainValidator.validateObject(dto);
 
-        if (
-                dto.getCategoryId() == null ||
-                dto.getName() == null ||
-                dto.getDescription() == null ||
-                dto.getUnitPrice() == null ||
-                dto.getUnitsInStock() == null ||
-                dto.getActive() == null
-        )
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
-
-        Optional<Product> productFound = repository.findProductByName(dto.getName());
-        if (productFound.isPresent())
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This name already exists");
-
-        Product newProduct = new Product(
-                dto.getName(),
-                dto.getDescription(),
-                dto.getUnitPrice(),
-                dto.getUnitsInStock(),
-                dto.getActive(),
-                dto.getCategoryId()
+        repository.findProductByName(dto.getName()).ifPresent(
+                i -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "This Product name already exists");
+                }
         );
 
-        repository.save(newProduct);
+        var optCategory = categoryRepository.findById(dto.getCategoryId());
+        if (optCategory.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Category: " + dto.getCategoryId() + " not found");
+
+        var product = mapper.map(dto, Product.class);
+        repository.save(product);
+
+        dto.setId(product.getId());
+        return dto;
     }
 
     public void deleteById(Long id) {
@@ -70,36 +72,54 @@ public class ProductService {
     }
 
     @Transactional // specify this to roll back all completed transactions in case of errors in between
-    public void updateProductById(
-            Long id,
+    public UpdateProductDTO updateProductById(
+            Long productId,
             UpdateProductDTO dto
     ) {
-        Product product = repository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id: " + id + " not found" )
+        mainValidator.validateObject(dto);
+
+        repository.findById(productId).ifPresentOrElse(
+                product -> {
+                    if (dto.getName() != null) {
+                        repository.findProductByName(dto.getName()).ifPresent(
+                                i -> {
+                                    throw new ResponseStatusException(HttpStatus.CONFLICT,
+                                    "Product with this name already exists");
+                                }
+                        );
+                        product.setName(dto.getName());
+                    }
+
+                    if (dto.getDescription() != null)
+                        product.setDescription(dto.getDescription());
+                    if (dto.getUnitPrice() != null)
+                        product.setUnitPrice(dto.getUnitPrice());
+                    if (dto.getImageUrl() != null)
+                        product.setImageUrl(dto.getImageUrl());
+                    if (dto.getUnitsInStock() != null)
+                        product.setUnitsInStock(dto.getUnitsInStock());
+                    if (dto.getActive() != null)
+                        product.setActive(dto.getActive());
+                    if (dto.getCategoryId() != null) {
+                        categoryRepository.findById(dto.getCategoryId()).ifPresentOrElse(
+                                i -> product.setCategoryId(dto.getCategoryId()),
+                                () -> {
+                                    throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                            "Category id: " + dto.getCategoryId() + " not found"
+                                            );
+                                }
+                        );
+                    }
+
+
+                    product.setUpdatedAt(new Date());
+                },
+                () -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product id: " + productId + " not found" );
+                }
         );
 
-        if (dto.getName() != null && !dto.getName().isEmpty()) {
-            Optional<Product> found = repository.findProductByName(dto.getName());
-
-            if (found.isPresent())
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "This name already exists");
-
-            product.setName(dto.getName());
-        }
-
-        if (dto.getDescription() != null && !dto.getDescription().isEmpty())
-            product.setDescription(dto.getDescription());
-
-        if (dto.getUnitPrice() != null)
-            product.setUnitPrice(dto.getUnitPrice());
-
-        if (dto.getActive() != null)
-            product.setActive(dto.getActive());
-
-        if (dto.getUnitsInStock() != null)
-            product.setUnitsInStock(dto.getUnitsInStock());
-
-        product.setUpdatedAt(new Date());
+        return dto;
     }
 
     public List<Product> getByName(String name) {
