@@ -5,17 +5,20 @@ import com.asm.estore.dto.address.CreateAddressDTO;
 import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
+import com.asm.estore.dto.client.UpdateClientDTO;
 import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
 import com.asm.estore.validation.MainValidator;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -102,6 +105,34 @@ public class ClientService {
                         "Client with this Id: "+ dto.getClientId() + " does not exists");
                 }
         );
+        return dto;
+    }
+
+    @Transactional
+    public UpdateClientDTO updateClient(Long clientId, UpdateClientDTO dto) {
+        mainValidator.validateObject(dto);
+
+        clientRepository.findById(clientId).ifPresentOrElse(
+                client -> {
+                    if (dto.getFirstName() != null)
+                        client.setFirstName(dto.getFirstName());
+                    if (dto.getSecondName() != null)
+                        client.setSecondName(dto.getSecondName());
+                    if (dto.getEmail() != null)
+                        client.setEmail(dto.getEmail());
+                    if (dto.getCountryId() != null)
+                        client.setCountryId(dto.getCountryId());
+                    if (dto.getDob() != null)
+                        client.setDob(dto.getDob());
+
+                    client.setUpdatedAt(new Date());
+                },
+                () -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client with this Id not found");
+                }
+        );
+
+
         return dto;
     }
 }

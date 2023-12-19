@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class CreateClientDTO {
     private Long id;
+
     @NotBlank(message = "first name is required")
     private String firstName;
 
