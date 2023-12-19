@@ -2,6 +2,9 @@ package com.asm.estore.service;
 
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.client.AllClientsDTO;
+import com.asm.estore.dto.client.CreateClientDTO;
+import com.asm.estore.dto.client.SingleClientDTO;
+import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
 import com.asm.estore.validation.MainValidator;
@@ -44,18 +47,37 @@ public class ClientService {
         ).toList();
     }
 
-    public AllClientsDTO getById(Long clientId) {
+    public SingleClientDTO getById(Long clientId) {
         var optClient = clientRepository.findById(clientId);
         if (optClient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
 
-        return mapper.map(optClient.get(), AllClientsDTO.class);
+        return mapper.map(optClient.get(), SingleClientDTO.class);
     }
 
-    public AllClientsDTO createClient(AllClientsDTO dto) {
+    public CreateClientDTO createClient(CreateClientDTO dto) {
         mainValidator.validateObject(dto);
 
+        clientRepository.findByCountryId(dto.getCountryId()).ifPresent(
+                i -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Client with this ID already exists: " + dto.getCountryId());
+                }
+        );
+        clientRepository.findByEmail(dto.getEmail()).ifPresent(
+                i -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Client with this email already exists: " + dto.getEmail());
+                }
+        );
 
-        return new AllClientsDTO();
+        var client = mapper.map(dto, Client.class);
+        try {
+            clientRepository.save(client);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        dto.setId(client.getId());
+        return dto;
     }
 }

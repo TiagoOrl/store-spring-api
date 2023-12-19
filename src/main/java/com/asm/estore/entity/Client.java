@@ -1,12 +1,17 @@
 package com.asm.estore.entity;
 
+import com.asm.estore.utils.DateHelper;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,7 +22,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -32,7 +37,7 @@ public class Client {
     private String email;
 
     @Column
-    private Date dob;
+    private LocalDate dob;
 
     @Column(name="created_at")
     @CreationTimestamp
@@ -49,4 +54,8 @@ public class Client {
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "fk_client_id")
     private Set<Order> orders;
+
+    public void setDob(String date) {
+        this.dob = DateHelper.convertToLocalDate(date);
+    }
 }
