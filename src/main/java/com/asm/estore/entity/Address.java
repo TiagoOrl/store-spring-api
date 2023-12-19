@@ -40,7 +40,6 @@ public class Address {
     private Date createdAt;
 
     @Column(name="updated_at")
-    @UpdateTimestamp
     private Date updatedAt;
 
     @OneToOne(cascade = CascadeType.ALL)

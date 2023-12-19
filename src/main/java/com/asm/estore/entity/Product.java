@@ -32,7 +32,7 @@ public class Product {
     private String imageUrl;
 
     @Column
-    private boolean active;
+    private Boolean active;
 
     @Column(name="units_in_stock")
     private int unitsInStock;
@@ -45,21 +45,5 @@ public class Product {
     private Date updatedAt;
 
     @Column(name = "fk_category_id")
-    private Integer categoryId;
-
-    public Product(
-        String name,
-        String description,
-        Float unitPrice,
-        Integer unitsInStock,
-        Boolean active,
-        Integer categoryId
-    ) {
-        this.name = name;
-        this.description = description;
-        this.unitPrice = unitPrice;
-        this.unitsInStock = unitsInStock;
-        this.active = active;
-        this.categoryId = categoryId;
-    }
+    private Long categoryId;
 }
