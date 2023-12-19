@@ -1,9 +1,11 @@
 package com.asm.estore.service;
 
 import com.asm.estore.dto.address.AddressDTO;
+import com.asm.estore.dto.address.CreateAddressDTO;
 import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
+import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
@@ -78,6 +80,28 @@ public class ClientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         dto.setId(client.getId());
+        return dto;
+    }
+
+    public CreateAddressDTO addAddressForClient(CreateAddressDTO dto) {
+        mainValidator.validateObject(dto);
+        addressRepository.getAddressByClientId(dto.getClientId()).ifPresent(
+                i -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT,
+                            "This client already has an Address registered");
+                }
+        );
+        clientRepository.findById(dto.getClientId()).ifPresentOrElse(
+                i -> {
+                    var address = mapper.map(dto, Address.class);
+                    address.setClient(i);
+                    addressRepository.save(address);
+                },
+                () -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Client with this Id: "+ dto.getClientId() + " does not exists");
+                }
+        );
         return dto;
     }
 }

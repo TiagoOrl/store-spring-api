@@ -2,6 +2,7 @@ package com.asm.estore.controller;
 
 
 import com.asm.estore.dto.address.AddressDTO;
+import com.asm.estore.dto.address.CreateAddressDTO;
 import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
@@ -31,13 +32,18 @@ public class ClientController {
         return service.getById(clientId);
     }
 
+    @PostMapping("create")
+    public CreateClientDTO createClient(@RequestBody CreateClientDTO dto) {
+        return service.createClient(dto);
+    }
+
     @GetMapping("address")
     public List<AddressDTO> getAllAddresses() {
         return service.getAllAddresses();
     }
 
-    @PostMapping("create")
-    public CreateClientDTO createClient(@RequestBody CreateClientDTO dto) {
-        return service.createClient(dto);
+    @PostMapping("address/create")
+    public CreateAddressDTO createAddresForClient(@RequestBody CreateAddressDTO dto) {
+        return service.addAddressForClient(dto);
     }
 }
