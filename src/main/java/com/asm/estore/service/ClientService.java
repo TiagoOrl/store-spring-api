@@ -26,15 +26,20 @@ import java.util.List;
 public class ClientService {
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
-    @Autowired
-    private ModelMapper mapper;
-    @Autowired
-    private MainValidator mainValidator;
+    private final ModelMapper mapper;
+    private final MainValidator mainValidator;
 
     @Autowired
-    public ClientService(ClientRepository repository, AddressRepository addressRepository) {
+    public ClientService(
+            ClientRepository repository,
+            AddressRepository addressRepository,
+            ModelMapper mapper,
+            MainValidator mainValidator
+    ) {
         this.clientRepository = repository;
         this.addressRepository = addressRepository;
+        this.mapper = mapper;
+        this.mainValidator = mainValidator;
     }
 
     public List<AllClientsDTO> getAllClients() {

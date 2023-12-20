@@ -22,19 +22,21 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository repository;
     private final ProductCategoryRepository categoryRepository;
-    @Autowired
-    private ModelMapper mapper;
-    @Autowired
-    private MainValidator mainValidator;
+    private final ModelMapper mapper;
+    private final MainValidator mainValidator;
 
 
     @Autowired // constructor annotation for dependency injection
     public ProductService(
             ProductRepository repository,
-            ProductCategoryRepository categoryRepository
+            ProductCategoryRepository categoryRepository,
+            ModelMapper mapper,
+            MainValidator mainValidator
     ) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.mapper = mapper;
+        this.mainValidator = mainValidator;
     }
 
     public List<ProductDTO> getAll() {

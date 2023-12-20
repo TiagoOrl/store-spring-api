@@ -7,6 +7,7 @@ import com.asm.estore.entity.Product;
 import com.asm.estore.repository.OrderProductRepository;
 import com.asm.estore.repository.OrderRepository;
 import com.asm.estore.repository.ProductRepository;
+import com.asm.estore.validation.MainValidator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +23,22 @@ public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
+    private MainValidator mainValidator;
 
     @Autowired
     public OrderProductService(
             OrderProductRepository orderProductRepository,
             OrderRepository orderRepository,
-            ProductRepository productRepository
+            ProductRepository productRepository,
+            ModelMapper mapper,
+            MainValidator mainValidator
             ) {
         this.orderProductRepository = orderProductRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.mapper = mapper;
+        this.mainValidator = mainValidator;
     }
 
     public List<OrderProduct> getAllOrderProducts() {
