@@ -4,6 +4,7 @@ import com.asm.estore.dto.category.AddCategoryDTO;
 import com.asm.estore.dto.category.CategoryDTO;
 import com.asm.estore.entity.ProductCategory;
 import com.asm.estore.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class CategoryController {
     }
 
     @PostMapping("add")
-    public void addCategory(@RequestBody AddCategoryDTO dto) {
+    public void addCategory(@Valid @RequestBody AddCategoryDTO dto) {
         service.addCategory(dto);
     }
 }

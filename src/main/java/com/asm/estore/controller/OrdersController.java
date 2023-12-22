@@ -7,6 +7,7 @@ import com.asm.estore.entity.Order;
 import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.service.OrderProductService;
 import com.asm.estore.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +39,16 @@ public class OrdersController {
     }
 
     @PostMapping(path = "create/{clientId}")
-    public OrderDTO createOrderByClientId(@PathVariable("clientId") Long id) {
+    public OrderDTO createOrderByClientId(
+            @PathVariable("clientId") Long id
+    ) {
         return orderService.createNewOrder(id);
     }
 
     @PutMapping(path = "finalize/{orderId}")
-    public OrderDTO finalizeOrder(@PathVariable("orderId") Long orderId) {
+    public OrderDTO finalizeOrder(
+            @PathVariable("orderId") Long orderId
+    ) {
         return orderService.finalizeOrder(orderId);
     }
 
