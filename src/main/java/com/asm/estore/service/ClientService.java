@@ -11,7 +11,6 @@ import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
-import com.asm.estore.validation.MainValidator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +25,17 @@ import java.util.List;
 public class ClientService {
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
-    @Autowired
-    private ModelMapper mapper;
-    @Autowired
-    private MainValidator mainValidator;
+    private final ModelMapper mapper;
 
     @Autowired
-    public ClientService(ClientRepository repository, AddressRepository addressRepository) {
+    public ClientService(
+            ClientRepository repository,
+            AddressRepository addressRepository,
+            ModelMapper mapper
+    ) {
         this.clientRepository = repository;
         this.addressRepository = addressRepository;
+        this.mapper = mapper;
     }
 
     public List<AllClientsDTO> getAllClients() {
@@ -62,8 +63,6 @@ public class ClientService {
     }
 
     public CreateClientDTO createClient(CreateClientDTO dto) {
-        mainValidator.validateObject(dto);
-
         clientRepository.findByCountryId(dto.getCountryId()).ifPresent(
                 i -> {
                     throw new ResponseStatusException(HttpStatus.CONFLICT,
@@ -88,7 +87,6 @@ public class ClientService {
     }
 
     public CreateAddressDTO addAddressForClient(CreateAddressDTO dto) {
-        mainValidator.validateObject(dto);
         addressRepository.getAddressByClientId(dto.getClientId()).ifPresent(
                 i -> {
                     throw new ResponseStatusException(HttpStatus.CONFLICT,
@@ -111,8 +109,6 @@ public class ClientService {
 
     @Transactional
     public UpdateClientDTO updateClient(Long clientId, UpdateClientDTO dto) {
-        mainValidator.validateObject(dto);
-
         clientRepository.findById(clientId).ifPresentOrElse(
                 client -> {
                     if (dto.getFirstName() != null)
@@ -139,8 +135,6 @@ public class ClientService {
 
     @Transactional
     public UpdateAddressDTO updateAddressByClientId(Long clientId, UpdateAddressDTO dto) {
-        mainValidator.validateObject(dto);
-
         addressRepository.getAddressByClientId(clientId).ifPresentOrElse(
                 address -> {
                     if (dto.getStreet() != null)

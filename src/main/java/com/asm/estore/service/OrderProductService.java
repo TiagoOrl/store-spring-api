@@ -1,6 +1,8 @@
 package com.asm.estore.service;
 
+import com.asm.estore.dto.order.DeleteOrderProductDTO;
 import com.asm.estore.dto.order.OrderProductDTO;
+import com.asm.estore.dto.order.UpdateOrderProductDTO;
 import com.asm.estore.entity.Order;
 import com.asm.estore.entity.OrderProduct;
 import com.asm.estore.entity.Product;
@@ -22,18 +24,19 @@ public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     @Autowired
     public OrderProductService(
             OrderProductRepository orderProductRepository,
             OrderRepository orderRepository,
-            ProductRepository productRepository
+            ProductRepository productRepository,
+            ModelMapper mapper
             ) {
         this.orderProductRepository = orderProductRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.mapper = mapper;
     }
 
     public List<OrderProduct> getAllOrderProducts() {
@@ -108,13 +111,7 @@ public class OrderProductService {
     }
 
     @Transactional
-    public OrderProductDTO changeAmount(OrderProductDTO dto) {
-        if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
-        }
-        if (dto.getAmount() < 1)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Choose a value > 0");
-
+    public UpdateOrderProductDTO changeAmount(UpdateOrderProductDTO dto) {
         Optional<OrderProduct> optOrderProduct =
                 orderProductRepository.findOrderProductByOrderIdProductId(dto.getFkOrderId(), dto.getFkProductId());
 
@@ -144,11 +141,11 @@ public class OrderProductService {
         orderProduct.setAmount(dto.getAmount());
         order.setTotalSum(deductedSum + dto.getAmount() * orderProduct.getUnitPrice());
 
-        return mapper.map(orderProduct, OrderProductDTO.class);
+        return mapper.map(orderProduct, UpdateOrderProductDTO.class);
     }
 
     @Transactional
-    public OrderProductDTO deleteByOrderIdProductId(OrderProductDTO dto) {
+    public DeleteOrderProductDTO deleteByOrderIdProductId(DeleteOrderProductDTO dto) {
 
         if (dto.getFkOrderId() == null || dto.getFkProductId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing order id or product id");
@@ -173,6 +170,6 @@ public class OrderProductService {
         );
 
         orderProductRepository.delete(orderProduct);
-        return mapper.map(orderProduct, OrderProductDTO.class);
+        return mapper.map(orderProduct, DeleteOrderProductDTO.class);
     }
 }

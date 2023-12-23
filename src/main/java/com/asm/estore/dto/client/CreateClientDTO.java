@@ -8,9 +8,11 @@ public class CreateClientDTO {
     private Long id;
 
     @NotBlank(message = "first name is required")
+    @Size(min = 2, max = 80)
     private String firstName;
 
     @NotBlank(message = "second name is required")
+    @Size(min = 1, max = 230)
     private String secondName;
 
     @NotBlank(message = "country id is required")

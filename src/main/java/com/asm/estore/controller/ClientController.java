@@ -9,6 +9,7 @@ import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
 import com.asm.estore.dto.client.UpdateClientDTO;
 import com.asm.estore.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,14 +36,16 @@ public class ClientController {
     }
 
     @PostMapping("create")
-    public CreateClientDTO createClient(@RequestBody CreateClientDTO dto) {
+    public CreateClientDTO createClient(
+            @Valid @RequestBody CreateClientDTO dto
+    ) {
         return service.createClient(dto);
     }
 
     @PutMapping("{clientId}")
     public UpdateClientDTO updateClientData(
             @PathVariable("clientId") Long clientId,
-            @RequestBody UpdateClientDTO dto
+            @Valid @RequestBody UpdateClientDTO dto
     ) {
         return service.updateClient(clientId, dto);
     }
@@ -53,14 +56,16 @@ public class ClientController {
     }
 
     @PostMapping("address/create")
-    public CreateAddressDTO createAddressForClient(@RequestBody CreateAddressDTO dto) {
+    public CreateAddressDTO createAddressForClient(
+            @Valid @RequestBody CreateAddressDTO dto
+    ) {
         return service.addAddressForClient(dto);
     }
 
     @PutMapping("address/{clientId}")
     public UpdateAddressDTO updateAddress(
             @PathVariable("clientId") Long clientId,
-            @RequestBody UpdateAddressDTO dto) {
+            @Valid @RequestBody UpdateAddressDTO dto) {
         return service.updateAddressByClientId(clientId, dto);
     }
 }

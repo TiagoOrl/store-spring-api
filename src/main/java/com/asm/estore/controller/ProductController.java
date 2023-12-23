@@ -6,6 +6,7 @@ import com.asm.estore.dto.product.SearchProductDTO;
 import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,9 @@ public class ProductController {
     }
 
     @PostMapping("add")
-    public AddProductDTO addProduct(@RequestBody AddProductDTO product) {
+    public AddProductDTO addProduct(
+            @Valid @RequestBody AddProductDTO product
+    ) {
         return productService.addProduct(product);
     }
 
@@ -44,7 +47,7 @@ public class ProductController {
     @PutMapping(path = "{productId}")
     public UpdateProductDTO updateProductById(
             @PathVariable("productId") Long productId,
-            @RequestBody UpdateProductDTO dto
+            @Valid @RequestBody UpdateProductDTO dto
     ) {
         return productService.updateProductById(productId, dto);
     }

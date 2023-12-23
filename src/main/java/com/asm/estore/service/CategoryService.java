@@ -16,12 +16,12 @@ import java.util.List;
 @Component
 public class CategoryService {
     private final ProductCategoryRepository repository;
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     @Autowired
-    public CategoryService(ProductCategoryRepository repository) {
+    public CategoryService(ProductCategoryRepository repository, ModelMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     public List<CategoryDTO> getAll() {

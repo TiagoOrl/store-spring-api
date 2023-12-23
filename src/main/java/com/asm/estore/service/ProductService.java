@@ -6,7 +6,6 @@ import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.ProductCategoryRepository;
 import com.asm.estore.repository.ProductRepository;
-import com.asm.estore.validation.MainValidator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +21,18 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository repository;
     private final ProductCategoryRepository categoryRepository;
-    @Autowired
-    private ModelMapper mapper;
-    @Autowired
-    private MainValidator mainValidator;
+    private final ModelMapper mapper;
 
 
     @Autowired // constructor annotation for dependency injection
     public ProductService(
             ProductRepository repository,
-            ProductCategoryRepository categoryRepository
+            ProductCategoryRepository categoryRepository,
+            ModelMapper mapper
     ) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.mapper = mapper;
     }
 
     public List<ProductDTO> getAll() {
@@ -44,8 +42,6 @@ public class ProductService {
     }
 
     public AddProductDTO addProduct(AddProductDTO dto) {
-        mainValidator.validateObject(dto);
-
         repository.findProductByName(dto.getName()).ifPresent(
                 i -> {
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "This Product name already exists");
@@ -76,8 +72,6 @@ public class ProductService {
             Long productId,
             UpdateProductDTO dto
     ) {
-        mainValidator.validateObject(dto);
-
         repository.findById(productId).ifPresentOrElse(
                 product -> {
                     if (dto.getName() != null) {

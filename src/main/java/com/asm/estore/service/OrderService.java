@@ -23,19 +23,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
     private final OrderProductRepository orderProductRepository;
-
-    @Autowired
     private ModelMapper mapper;
 
     @Autowired
     public OrderService(
             OrderRepository repository,
             ClientRepository clientRepository,
-            OrderProductRepository orderProductRepository
+            OrderProductRepository orderProductRepository,
+            ModelMapper mapper
     ) {
         this.orderRepository = repository;
         this.clientRepository = clientRepository;
         this.orderProductRepository = orderProductRepository;
+        this.mapper = mapper;
     }
 
     public List<Order> getAll() {
