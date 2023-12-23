@@ -36,7 +36,9 @@ public class ClientController {
     }
 
     @PostMapping("create")
-    public CreateClientDTO createClient(@Valid @RequestBody CreateClientDTO dto) {
+    public CreateClientDTO createClient(
+            @Valid @RequestBody CreateClientDTO dto
+    ) {
         return service.createClient(dto);
     }
 
