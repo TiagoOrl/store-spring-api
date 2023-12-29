@@ -24,8 +24,11 @@ public class OrdersController {
     }
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAll();
+    public List<OrderDTO> getAllOrders(
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
+    ) {
+        return orderService.getAll(page, size);
     }
 
     @GetMapping("client/{clientId}")

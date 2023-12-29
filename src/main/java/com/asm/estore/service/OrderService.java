@@ -11,6 +11,7 @@ import com.asm.estore.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,8 +39,14 @@ public class OrderService {
         this.mapper = mapper;
     }
 
-    public List<Order> getAll() {
-        return orderRepository.findAll();
+    public List<OrderDTO> getAll(Integer page, Integer size) {
+        if (size > 30)
+            size = 30;
+
+        var pageable = PageRequest.of(page, size);
+        return orderRepository.findAll(pageable).stream().map(
+                order -> mapper.map(order, OrderDTO.class)
+        ).toList();
     }
 
     public List<OrderDTO> getAllByClientId(Long clientId) {
