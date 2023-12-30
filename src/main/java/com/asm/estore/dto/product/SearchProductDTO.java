@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class SearchProductDTO {
     @NotBlank(message = "product name is required")
-    @Size(min = 2, max = 80)
+    @Size(min = 0, max = 120)
     String name;
 }
