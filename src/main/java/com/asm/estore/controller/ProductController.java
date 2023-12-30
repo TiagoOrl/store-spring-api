@@ -23,8 +23,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
-        return productService.getAll();
+    public List<ProductDTO> getAllProducts(
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
+            ) {
+        return productService.getAll(page, size);
     }
 
     @GetMapping("get-by-name")

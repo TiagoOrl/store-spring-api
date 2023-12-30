@@ -14,6 +14,7 @@ import com.asm.estore.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -54,6 +55,7 @@ public class ClientService {
         ).toList();
     }
 
+    @Cacheable("clients")
     public SingleClientDTO getById(Long clientId) {
         var optClient = clientRepository.findById(clientId);
         if (optClient.isEmpty())
