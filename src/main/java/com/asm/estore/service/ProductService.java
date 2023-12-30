@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -125,8 +126,9 @@ public class ProductService {
     public List<Product> getByName(String name) {
         if (name == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        Pageable paging = PageRequest.of(0, 5);
 
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip());
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), paging);
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
