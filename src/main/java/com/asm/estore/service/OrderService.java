@@ -82,12 +82,12 @@ public class OrderService {
         }
     }
 
-    public Order getByOrderId(Long id) {
+    public OrderDTO getByOrderId(Long id) {
         Optional<Order> optOrder = orderRepository.findById(id);
         if (optOrder.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No order found with this Id");
 
-        return optOrder.get();
+        return mapper.map(optOrder.get(), OrderDTO.class);
     }
 
     @Transactional

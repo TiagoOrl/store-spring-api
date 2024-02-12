@@ -9,6 +9,7 @@ import com.asm.estore.service.OrderProductService;
 import com.asm.estore.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +38,8 @@ public class OrdersController {
     }
 
     @GetMapping("{orderId}")
-    public Order getOrderById(@PathVariable("orderId") Long id) {
-        return orderService.getByOrderId(id);
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long id) {
+        return ResponseEntity.ok(orderService.getByOrderId(id));
     }
 
     @PostMapping(path = "create/{clientId}")
