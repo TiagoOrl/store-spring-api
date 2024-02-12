@@ -13,6 +13,6 @@ import java.util.Optional;
 @Component
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("SELECT order from Order order WHERE order.clientId = ?1")
+    @Query("SELECT order from Order order WHERE order.client.id = ?1")
     Optional<List<Order>> findAllClientsOrders(Long clientId);
 }

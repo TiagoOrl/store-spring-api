@@ -71,7 +71,7 @@ public class OrderService {
                 }
         ));
 
-        Order order = new Order(clientId);
+        Order order = new Order();
 
         try {
             orderRepository.save(order);
