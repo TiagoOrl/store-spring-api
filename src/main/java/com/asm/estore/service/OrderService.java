@@ -60,7 +60,8 @@ public class OrderService {
 
     public OrderDTO createNewOrder(Long clientId) {
 
-        if (clientRepository.findById(clientId).isEmpty())
+        var clientOpt = clientRepository.findById(clientId);
+        if (clientOpt.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Client Id: " + clientId + " doesn't exists");
 
         Optional<List<Order>> opt =  orderRepository.findAllClientsOrders(clientId);
@@ -71,7 +72,7 @@ public class OrderService {
                 }
         ));
 
-        Order order = new Order();
+        Order order = new Order(clientOpt.get());
 
         try {
             orderRepository.save(order);
