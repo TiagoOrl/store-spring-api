@@ -20,9 +20,9 @@ public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column(name = "created_at")
@@ -32,10 +32,7 @@ public class ProductCategory {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    // ONE Category to MANY Products
-    // NON OWNING side of relationship
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "fk_category_id") // name of FK present in Product
+    @OneToMany(mappedBy = "category")
     private Set<Product> products;
 
     public ProductCategory(String name) {

@@ -2,27 +2,24 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "order_main")
-@Data @NoArgsConstructor
+@Data
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Integer id;
+    private Long id;
 
-    @Column(name = "total_sum")
+    @Column(name = "total_sum", nullable = false)
     private Float totalSum;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     @CreationTimestamp
     private Date createdAt;
 
@@ -31,9 +28,9 @@ public class Order {
 
     private Boolean finalized;
 
-    @Column(name = "fk_client_id")
-    private Long clientId;
-
+    @ManyToOne
+    @JoinColumn(name = "fk_client_id", nullable = false)
+    private Client client;
 
     @ManyToMany
     @JoinTable(
@@ -43,8 +40,7 @@ public class Order {
     )
     private Set<Product> products;
 
-    public Order(Long clientId) {
-        this.clientId = clientId;
+    public Order() {
         this.totalSum = 0.00F;
         this.finalized = false;
     }

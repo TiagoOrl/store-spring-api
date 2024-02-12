@@ -17,25 +17,25 @@ public class Address {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "street")
+    @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "neighborhood")
+    @Column(name = "neighborhood", nullable = false)
     private String neighborhood;
 
-    @Column(name = "number")
+    @Column(name = "number", nullable = false)
     private Integer number;
 
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "state_or_county")
+    @Column(name = "state_or_county", nullable = false)
     private String stateOrCounty;
 
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     @CreationTimestamp
     private Date createdAt;
 

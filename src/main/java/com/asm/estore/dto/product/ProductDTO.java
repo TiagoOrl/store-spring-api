@@ -1,5 +1,6 @@
 package com.asm.estore.dto.product;
 
+import com.asm.estore.dto.category.CategoryDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,5 +16,5 @@ public class ProductDTO {
     private int unitsInStock;
     private Date createdAt;
     private Date updatedAt;
-    private Integer categoryId;
+    private CategoryDTO category;
 }
