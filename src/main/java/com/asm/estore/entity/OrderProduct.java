@@ -16,16 +16,16 @@ public class OrderProduct {
     @Column
     private Integer amount;
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(name = "unit_price")
+    @Column(name = "unit_price", nullable = false)
     private Float unitPrice;
 
-    @Column(name = "fk_order_id")
+    @Column(name = "fk_order_id", nullable = false)
     private Long fkOrderId;
 
-    @Column(name = "fk_product_id")
+    @Column(name = "fk_product_id", nullable = false)
     private Long fkProductId;
 
     public OrderProduct(Integer amount, Long fkOrderId, Long fkProductId) {

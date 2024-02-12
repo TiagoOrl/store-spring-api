@@ -24,22 +24,22 @@ public class Client {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     private String secondName;
 
-    @Column(name = "country_id")
+    @Column(name = "country_id", nullable = false)
     private String countryId;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate dob;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     @CreationTimestamp
     private Date createdAt;
 
@@ -49,10 +49,7 @@ public class Client {
     @OneToOne(mappedBy = "client")
     private Address address;
 
-    // non owning side of relationship
-    //One Client to MANY Orders
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "fk_client_id")
+    @OneToMany(mappedBy = "client")
     private Set<Order> orders;
 
     public void setDob(String date) {

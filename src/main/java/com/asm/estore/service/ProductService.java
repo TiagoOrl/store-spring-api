@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,6 +61,7 @@ public class ProductService {
                 "Category: " + dto.getCategoryId() + " not found");
 
         var product = mapper.map(dto, Product.class);
+        product.setCategory(optCategory.get());
         repository.save(product);
 
         dto.setId(product.getId());
@@ -102,7 +104,7 @@ public class ProductService {
                         product.setActive(dto.getActive());
                     if (dto.getCategoryId() != null) {
                         categoryRepository.findById(dto.getCategoryId()).ifPresentOrElse(
-                                i -> product.setCategoryId(dto.getCategoryId()),
+                                i -> product.setCategory(i),
                                 () -> {
                                     throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                                             "Category id: " + dto.getCategoryId() + " not found"
@@ -122,14 +124,15 @@ public class ProductService {
         return dto;
     }
 
-    public List<Product> getByName(String name) {
+    public List<ProductDTO> getByName(String name) {
         if (name == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        Pageable paging = PageRequest.of(0, 5);
 
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip());
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), paging);
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return opt.get();
+        return opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
     }
 }

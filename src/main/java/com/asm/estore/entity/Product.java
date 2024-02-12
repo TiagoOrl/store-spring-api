@@ -19,31 +19,32 @@ public class Product {
     @Column
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
-    @Column(name="unit_price")
+    @Column(name="unit_price", nullable = false)
     private Float unitPrice;
 
     @Column(name="image_url")
     private String imageUrl;
 
-    @Column
+    @Column(nullable = false)
     private Boolean active;
 
-    @Column(name="units_in_stock")
+    @Column(name="units_in_stock", nullable = false)
     private int unitsInStock;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     @CreationTimestamp
     private Date createdAt;
 
     @Column(name="updated_at")
     private Date updatedAt;
 
-    @Column(name = "fk_category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "fk_category_id", nullable = false)
+    private ProductCategory category;
 }
