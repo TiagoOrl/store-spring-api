@@ -10,6 +10,7 @@ import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
+import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +46,9 @@ public class ClientService {
             Optional<Integer> page,
             Optional<Integer> size
     ) {
-        var pageVal = 0;
-        var sizeVal = 30;
+        var pagUtils = new PaginationUtil(page, size);
 
-        if (page.isPresent() && size.isPresent()) {
-            pageVal = page.get();
-            sizeVal = size.get();
-            if (sizeVal > 30)
-                sizeVal = 30;
-        }
-
-
-        return clientRepository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
+        return clientRepository.findAll(pagUtils.getPageRequest()).stream().map(
                 client -> mapper.map(client, SingleClientDTO.class)
         ).toList();
     }
@@ -66,17 +58,9 @@ public class ClientService {
             Optional<Integer> page,
             Optional<Integer> size
     ) {
-        var pageVal = 0;
-        var sizeVal = 30;
+        var pagUtils = new PaginationUtil(page, size);
 
-        if (page.isPresent() && size.isPresent()) {
-            pageVal = page.get();
-            sizeVal = size.get();
-            if (sizeVal > 30)
-                sizeVal = 30;
-        }
-
-        return clientRepository.getAllByName(name.trim(), PageRequest.of(pageVal, sizeVal)).stream().map(
+        return clientRepository.getAllByName(name.trim(), pagUtils.getPageRequest()).stream().map(
                 client -> mapper.map(client, SingleClientDTO.class)
         ).toList();
     }
@@ -85,18 +69,9 @@ public class ClientService {
             Optional<Integer> page,
             Optional<Integer> size
     ) {
+        var pagUtils = new PaginationUtil(page, size);
 
-        var pageVal = 0;
-        var sizeVal = 30;
-
-        if (page.isPresent() && size.isPresent()) {
-            pageVal = page.get();
-            sizeVal = size.get();
-            if (sizeVal > 30)
-                sizeVal = 30;
-        }
-
-        return addressRepository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
+        return addressRepository.findAll(pagUtils.getPageRequest()).stream().map(
                 address -> {
                     AddressDTO dto = mapper.map(address, AddressDTO.class);
                     dto.setClientsName(address.getClient().getFirstName() + " " + address.getClient().getSecondName());

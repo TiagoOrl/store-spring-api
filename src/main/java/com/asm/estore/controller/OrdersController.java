@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/order")
@@ -26,8 +27,8 @@ public class OrdersController {
 
     @GetMapping
     public List<OrderDTO> getAllOrders(
-            @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "size") Integer size
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size
     ) {
         return orderService.getAll(page, size);
     }
