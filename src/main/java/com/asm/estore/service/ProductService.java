@@ -37,13 +37,21 @@ public class ProductService {
         this.mapper = mapper;
     }
 
-    public List<ProductDTO> getAll(Integer page, Integer size) {
-        if (size > 30)
-            size = 30;
+    public List<ProductDTO> getAll(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pageVal = 0;
+        var sizeVal = 30;
 
-        var pageable = PageRequest.of(page, size);
+        if (page.isPresent() && size.isPresent()) {
+            pageVal = page.get();
+            sizeVal = size.get();
+            if (sizeVal > 30)
+                sizeVal = 30;
+        }
 
-        return repository.findAll(pageable).stream().map(
+        return repository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
                 p -> mapper.map(p, ProductDTO.class)
         ).toList();
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/client")
@@ -25,13 +26,20 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<SingleClientDTO> getAllClients() {
-        return service.getAllClients();
+    public List<SingleClientDTO> getAllClients(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size
+    ) {
+        return service.getAllClients(page, size);
     }
 
     @GetMapping("get-by-name")
-    public List<SingleClientDTO> getAllByName(@RequestParam String name) {
-        return service.getAllByNameMatch(name);
+    public List<SingleClientDTO> getAllByName(
+            @RequestParam String name,
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        return service.getAllByNameMatch(name, page, size);
     }
 
     @GetMapping("{clientId}")
@@ -55,8 +63,11 @@ public class ClientController {
     }
 
     @GetMapping("address")
-    public List<AddressDTO> getAllAddresses() {
-        return service.getAllAddresses();
+    public List<AddressDTO> getAllAddresses(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size
+    ) {
+        return service.getAllAddresses(page, size);
     }
 
     @PostMapping("address/create")
