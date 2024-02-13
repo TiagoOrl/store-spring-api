@@ -17,5 +17,4 @@ public class SingleClientDTO implements Serializable {
     private String dob;
     private Date createdAt;
     private Date updatedAt;
-    private Set<OrderDTO> orders;
 }

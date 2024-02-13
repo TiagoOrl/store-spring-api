@@ -55,7 +55,7 @@ public class ClientService {
         ).toList();
     }
 
-    @Cacheable("clients")
+    @Cacheable("clients1")
     public SingleClientDTO getById(Long clientId) {
         var optClient = clientRepository.findById(clientId);
         if (optClient.isEmpty())
