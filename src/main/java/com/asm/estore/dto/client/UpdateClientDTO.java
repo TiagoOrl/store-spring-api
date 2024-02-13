@@ -14,6 +14,9 @@ public class UpdateClientDTO {
     @Size(min = 2, max = 130, message = "invalid countryId")
     private String countryId;
 
+    @Size(min = 4, max = 22)
+    private String password;
+
     @Email(message = "invalid email")
     private String email;
 

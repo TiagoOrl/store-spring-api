@@ -23,6 +23,10 @@ public class CreateClientDTO {
     @Email
     private String email;
 
+    @NotBlank(message = "password is required")
+    @Size(min = 4, max = 22)
+    private String password;
+
     @NotNull(message = "dob is null")
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
     private String dob;

@@ -33,6 +33,9 @@ public class Client {
     @Column
     private String fullname;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "country_id", nullable = false, unique = true)
     private String countryId;
 

@@ -124,6 +124,8 @@ public class ClientService {
                         client.setCountryId(dto.getCountryId());
                     if (dto.getDob() != null)
                         client.setDob(dto.getDob());
+                    if (dto.getPassword() != null)
+                        client.setPassword(dto.getPassword());
 
                     client.setUpdatedAt(new Date());
                 },
