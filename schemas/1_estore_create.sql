@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS client (
 	id int UNSIGNED NOT NULL AUTO_INCREMENT,
 	first_name varchar(100) NOT NULL,
 	second_name varchar(200) NOT NULL,
+    fullname varchar(200) NOT NULL,
+    password varchar(30) NOT NULL,
 	country_id varchar(100) UNIQUE NOT NULL,
 	email varchar(100) UNIQUE NOT NULL,
 	dob DATE NOT NULL,
