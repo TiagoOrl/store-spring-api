@@ -1,7 +1,9 @@
 package com.asm.estore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "order_main")
 @Data
+@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +43,9 @@ public class Order {
     )
     private Set<Product> products;
 
-    public Order() {
+    public Order(Client client) {
         this.totalSum = 0.00F;
         this.finalized = false;
+        this.client = client;
     }
 }

@@ -60,7 +60,8 @@ public class OrderService {
 
     public OrderDTO createNewOrder(Long clientId) {
 
-        if (clientRepository.findById(clientId).isEmpty())
+        var clientOpt = clientRepository.findById(clientId);
+        if (clientOpt.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Client Id: " + clientId + " doesn't exists");
 
         Optional<List<Order>> opt =  orderRepository.findAllClientsOrders(clientId);
@@ -71,7 +72,7 @@ public class OrderService {
                 }
         ));
 
-        Order order = new Order();
+        Order order = new Order(clientOpt.get());
 
         try {
             orderRepository.save(order);
@@ -81,12 +82,12 @@ public class OrderService {
         }
     }
 
-    public Order getByOrderId(Long id) {
+    public OrderDTO getByOrderId(Long id) {
         Optional<Order> optOrder = orderRepository.findById(id);
         if (optOrder.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No order found with this Id");
 
-        return optOrder.get();
+        return mapper.map(optOrder.get(), OrderDTO.class);
     }
 
     @Transactional

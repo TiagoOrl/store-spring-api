@@ -4,7 +4,6 @@ package com.asm.estore.controller;
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.address.CreateAddressDTO;
 import com.asm.estore.dto.address.UpdateAddressDTO;
-import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
 import com.asm.estore.dto.client.UpdateClientDTO;
@@ -26,8 +25,13 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<AllClientsDTO> getAllClients() {
+    public List<SingleClientDTO> getAllClients() {
         return service.getAllClients();
+    }
+
+    @GetMapping("get-by-name")
+    public List<SingleClientDTO> getAllByName(@RequestParam String name) {
+        return service.getAllByNameMatch(name);
     }
 
     @GetMapping("{clientId}")

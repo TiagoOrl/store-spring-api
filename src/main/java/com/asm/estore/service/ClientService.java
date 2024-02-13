@@ -3,7 +3,6 @@ package com.asm.estore.service;
 import com.asm.estore.dto.address.AddressDTO;
 import com.asm.estore.dto.address.CreateAddressDTO;
 import com.asm.estore.dto.address.UpdateAddressDTO;
-import com.asm.estore.dto.client.AllClientsDTO;
 import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.SingleClientDTO;
 import com.asm.estore.dto.client.UpdateClientDTO;
@@ -39,9 +38,10 @@ public class ClientService {
         this.mapper = mapper;
     }
 
-    public List<AllClientsDTO> getAllClients() {
+//    @Cacheable("clients1")
+    public List<SingleClientDTO> getAllClients() {
         return clientRepository.findAll().stream().map(
-                client -> mapper.map(client, AllClientsDTO.class)
+                client -> mapper.map(client, SingleClientDTO.class)
         ).toList();
     }
 
@@ -55,7 +55,7 @@ public class ClientService {
         ).toList();
     }
 
-    @Cacheable("clients")
+//    @Cacheable("clients1")
     public SingleClientDTO getById(Long clientId) {
         var optClient = clientRepository.findById(clientId);
         if (optClient.isEmpty())
@@ -79,6 +79,7 @@ public class ClientService {
         );
 
         var client = mapper.map(dto, Client.class);
+        client.setFullname(dto.getFirstName() + " " + dto.getSecondName());
         try {
             clientRepository.save(client);
         } catch (RuntimeException e) {
@@ -123,6 +124,8 @@ public class ClientService {
                         client.setCountryId(dto.getCountryId());
                     if (dto.getDob() != null)
                         client.setDob(dto.getDob());
+                    if (dto.getPassword() != null)
+                        client.setPassword(dto.getPassword());
 
                     client.setUpdatedAt(new Date());
                 },
@@ -160,5 +163,11 @@ public class ClientService {
         );
 
         return dto;
+    }
+
+    public List<SingleClientDTO> getAllByNameMatch(String name) {
+        return clientRepository.getAllByName(name.trim()).stream().map(
+                client -> mapper.map(client, SingleClientDTO.class)
+        ).toList();
     }
 }
