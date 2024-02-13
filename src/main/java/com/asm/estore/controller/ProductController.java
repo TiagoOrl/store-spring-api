@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/product")
@@ -24,8 +25,8 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDTO> getAllProducts(
-            @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "size") Integer size
+            @RequestParam(value = "page") Optional<Integer> page,
+            @RequestParam(value = "size") Optional<Integer> size
             ) {
         return productService.getAll(page, size);
     }

@@ -1,7 +1,8 @@
 package com.asm.estore.repository;
 
-import com.asm.estore.dto.client.SingleClientDTO;
+
 import com.asm.estore.entity.Client;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
@@ -20,5 +21,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByCountryId(String countryId);
 
     @Query("SELECT c from Client c WHERE UPPER(c.fullname) LIKE CONCAT('%', UPPER(?1), '%') ")
-    List<Client> getAllByName(String name);
+    List<Client> getAllByName(String name, Pageable pageable);
 }

@@ -14,12 +14,14 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ClientService {
@@ -39,14 +41,62 @@ public class ClientService {
     }
 
 //    @Cacheable("clients1")
-    public List<SingleClientDTO> getAllClients() {
-        return clientRepository.findAll().stream().map(
+    public List<SingleClientDTO> getAllClients(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pageVal = 0;
+        var sizeVal = 30;
+
+        if (page.isPresent() && size.isPresent()) {
+            pageVal = page.get();
+            sizeVal = size.get();
+            if (sizeVal > 30)
+                sizeVal = 30;
+        }
+
+
+        return clientRepository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
                 client -> mapper.map(client, SingleClientDTO.class)
         ).toList();
     }
 
-    public List<AddressDTO> getAllAddresses() {
-        return addressRepository.findAll().stream().map(
+    public List<SingleClientDTO> getAllByNameMatch(
+            String name,
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pageVal = 0;
+        var sizeVal = 30;
+
+        if (page.isPresent() && size.isPresent()) {
+            pageVal = page.get();
+            sizeVal = size.get();
+            if (sizeVal > 30)
+                sizeVal = 30;
+        }
+
+        return clientRepository.getAllByName(name.trim(), PageRequest.of(pageVal, sizeVal)).stream().map(
+                client -> mapper.map(client, SingleClientDTO.class)
+        ).toList();
+    }
+
+    public List<AddressDTO> getAllAddresses(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+
+        var pageVal = 0;
+        var sizeVal = 30;
+
+        if (page.isPresent() && size.isPresent()) {
+            pageVal = page.get();
+            sizeVal = size.get();
+            if (sizeVal > 30)
+                sizeVal = 30;
+        }
+
+        return addressRepository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
                 address -> {
                     AddressDTO dto = mapper.map(address, AddressDTO.class);
                     dto.setClientsName(address.getClient().getFirstName() + " " + address.getClient().getSecondName());
@@ -163,11 +213,5 @@ public class ClientService {
         );
 
         return dto;
-    }
-
-    public List<SingleClientDTO> getAllByNameMatch(String name) {
-        return clientRepository.getAllByName(name.trim()).stream().map(
-                client -> mapper.map(client, SingleClientDTO.class)
-        ).toList();
     }
 }
