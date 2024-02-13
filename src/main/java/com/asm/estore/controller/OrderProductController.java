@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/order_product")
@@ -23,8 +24,11 @@ public class OrderProductController {
     }
 
     @GetMapping
-    public List<OrderProduct> getAllOrderProducts() {
-        return orderProductService.getAllOrderProducts();
+    public List<OrderProduct> getAllOrderProducts(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        return orderProductService.getAllOrderProducts(page, size);
     }
 
     @GetMapping(path = "{orderId}")

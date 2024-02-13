@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/category")
@@ -19,8 +20,11 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDTO> getAllCategories() {
-        return service.getAll();
+    public List<CategoryDTO> getAllCategories(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        return service.getAll(page, size);
     }
 
     @PostMapping("add")
