@@ -30,6 +30,9 @@ public class Client {
     @Column(name = "second_name", nullable = false)
     private String secondName;
 
+    @Column
+    private String fullname;
+
     @Column(name = "country_id", nullable = false, unique = true)
     private String countryId;
 

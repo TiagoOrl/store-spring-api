@@ -31,4 +31,12 @@ public class CreateClientDTO {
         this.dob = dob.trim();
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName.trim();
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName.trim();
+    }
+
 }
