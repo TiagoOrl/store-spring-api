@@ -132,12 +132,22 @@ public class ProductService {
         return dto;
     }
 
-    public List<ProductDTO> getByName(String name) {
-        if (name == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        Pageable paging = PageRequest.of(0, 5);
+    public List<ProductDTO> getByName(
+            String name,
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pageVal = 0;
+        var sizeVal = 30;
 
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), paging);
+        if (page.isPresent() && size.isPresent()) {
+            pageVal = page.get();
+            sizeVal = size.get();
+            if (sizeVal > 30)
+                sizeVal = 30;
+        }
+
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), PageRequest.of(pageVal, sizeVal));
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 

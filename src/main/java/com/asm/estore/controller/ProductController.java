@@ -33,9 +33,11 @@ public class ProductController {
 
     @GetMapping("get-by-name")
     List<ProductDTO> getProductsByName(
-            @Valid @RequestBody SearchProductDTO dto
+            @Valid @RequestBody SearchProductDTO dto,
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size
     ) {
-        return productService.getByName(dto.getName());
+        return productService.getByName(dto.getName(), page, size);
     }
 
     @PostMapping("add")
