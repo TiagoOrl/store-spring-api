@@ -105,6 +105,7 @@ public class ClientService {
 
         var client = mapper.map(dto, Client.class);
         client.setFullname(dto.getFirstName() + " " + dto.getSecondName());
+        client.setDeleted(false);
         try {
             clientRepository.save(client);
         } catch (RuntimeException e) {

@@ -5,15 +5,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "client")
 @Data @NoArgsConstructor // auto generate getter and setters
-public class Client {
+public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -50,6 +55,9 @@ public class Client {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false)
+    private Boolean deleted;
+
     @OneToOne(mappedBy = "client")
     private Address address;
 
@@ -58,5 +66,42 @@ public class Client {
 
     public void setDob(String date) {
         this.dob = DateHelper.convertToLocalDate(date);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role.equals("admin"))
+            return List.of(
+                    new SimpleGrantedAuthority("admin"),
+                    new SimpleGrantedAuthority("client")
+            );
+
+        else
+            return List.of(new SimpleGrantedAuthority("client"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !deleted;
     }
 }
