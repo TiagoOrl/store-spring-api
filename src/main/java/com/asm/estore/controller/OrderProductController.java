@@ -23,7 +23,7 @@ public class OrderProductController {
         this.orderProductService = orderProductService;
     }
 
-    @GetMapping
+    @GetMapping("user")
     public List<OrderProduct> getAllOrderProducts(
             Optional<Integer> page,
             Optional<Integer> size
@@ -31,26 +31,26 @@ public class OrderProductController {
         return orderProductService.getAllOrderProducts(page, size);
     }
 
-    @GetMapping(path = "{orderId}")
+    @GetMapping(path = "user/{orderId}")
     public List<OrderProductDTO> getAllByOrderId(@PathVariable("orderId") Long id) {
         return orderProductService.getAllByOrderId(id);
     }
 
-    @PostMapping(path = "add")
+    @PostMapping(path = "user/add")
     public OrderProductDTO addProductToOrder(
             @Valid @RequestBody OrderProductDTO dto
     ) {
         return orderProductService.addOrderProduct(dto);
     }
 
-    @PutMapping(path = "update_amount")
+    @PutMapping(path = "user/update_amount")
     public UpdateOrderProductDTO changeProductAmount(
             @Valid @RequestBody UpdateOrderProductDTO dto
     ) {
         return orderProductService.changeAmount(dto);
     }
 
-    @DeleteMapping(path = "delete")
+    @DeleteMapping(path = "user/delete")
     public DeleteOrderProductDTO deleteOrderProduct(
             @Valid @RequestBody DeleteOrderProductDTO dto
     ) {

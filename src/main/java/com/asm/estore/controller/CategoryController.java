@@ -27,7 +27,7 @@ public class CategoryController {
         return service.getAll(page, size);
     }
 
-    @PostMapping("add")
+    @PostMapping("admin/add")
     public void addCategory(@Valid @RequestBody AddCategoryDTO dto) {
         service.addCategory(dto);
     }

@@ -25,7 +25,7 @@ public class OrdersController {
         this.orderService = orderService;
     }
 
-    @GetMapping
+    @GetMapping("user")
     public List<OrderDTO> getAllOrders(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size
@@ -33,24 +33,24 @@ public class OrdersController {
         return orderService.getAll(page, size);
     }
 
-    @GetMapping("client/{clientId}")
+    @GetMapping("user/client/{clientId}")
     public List<OrderDTO> getOrdersByClientId(@PathVariable("clientId") Long clientId) {
         return orderService.getAllByClientId(clientId);
     }
 
-    @GetMapping("{orderId}")
+    @GetMapping("user/{orderId}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long id) {
         return ResponseEntity.ok(orderService.getByOrderId(id));
     }
 
-    @PostMapping(path = "create/{clientId}")
+    @PostMapping(path = "user/create/{clientId}")
     public OrderDTO createOrderByClientId(
             @PathVariable("clientId") Long id
     ) {
         return orderService.createNewOrder(id);
     }
 
-    @PutMapping(path = "finalize/{orderId}")
+    @PutMapping(path = "user/finalize/{orderId}")
     public OrderDTO finalizeOrder(
             @PathVariable("orderId") Long orderId
     ) {

@@ -25,7 +25,7 @@ public class ClientController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("admin")
     public List<SingleClientDTO> getAllClients(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size
@@ -33,7 +33,7 @@ public class ClientController {
         return service.getAllClients(page, size);
     }
 
-    @GetMapping("get-by-name")
+    @GetMapping("admin/get-by-name")
     public List<SingleClientDTO> getAllByName(
             @RequestParam String name,
             Optional<Integer> page,
@@ -42,7 +42,7 @@ public class ClientController {
         return service.getAllByNameMatch(name, page, size);
     }
 
-    @GetMapping("{clientId}")
+    @GetMapping("admin/{clientId}")
     public SingleClientDTO getClientById(@PathVariable("clientId") Long clientId) {
         return service.getById(clientId);
     }
@@ -54,7 +54,7 @@ public class ClientController {
         return service.createClient(dto);
     }
 
-    @PutMapping("{clientId}")
+    @PutMapping("user/{clientId}")
     public UpdateClientDTO updateClientData(
             @PathVariable("clientId") Long clientId,
             @Valid @RequestBody UpdateClientDTO dto
@@ -62,7 +62,7 @@ public class ClientController {
         return service.updateClient(clientId, dto);
     }
 
-    @GetMapping("address")
+    @GetMapping("admin/address")
     public List<AddressDTO> getAllAddresses(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size
@@ -70,14 +70,14 @@ public class ClientController {
         return service.getAllAddresses(page, size);
     }
 
-    @PostMapping("address/create")
+    @PostMapping("user/address/create")
     public CreateAddressDTO createAddressForClient(
             @Valid @RequestBody CreateAddressDTO dto
     ) {
         return service.addAddressForClient(dto);
     }
 
-    @PutMapping("address/{clientId}")
+    @PutMapping("user/address/{clientId}")
     public UpdateAddressDTO updateAddress(
             @PathVariable("clientId") Long clientId,
             @Valid @RequestBody UpdateAddressDTO dto) {

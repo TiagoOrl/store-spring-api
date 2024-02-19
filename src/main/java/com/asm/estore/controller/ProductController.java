@@ -23,7 +23,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("user")
     public List<ProductDTO> getAllProducts(
             @RequestParam(value = "page") Optional<Integer> page,
             @RequestParam(value = "size") Optional<Integer> size
@@ -31,7 +31,7 @@ public class ProductController {
         return productService.getAll(page, size);
     }
 
-    @GetMapping("get-by-name")
+    @GetMapping("user/get-by-name")
     List<ProductDTO> getProductsByName(
             @Valid @RequestBody SearchProductDTO dto,
             @RequestParam Optional<Integer> page,
@@ -40,19 +40,19 @@ public class ProductController {
         return productService.getByName(dto.getName(), page, size);
     }
 
-    @PostMapping("add")
+    @PostMapping("admin/add")
     public AddProductDTO addProduct(
             @Valid @RequestBody AddProductDTO product
     ) {
         return productService.addProduct(product);
     }
 
-    @DeleteMapping(path = "{productId}")
+    @DeleteMapping(path = "admin/{productId}")
     public void deleteProductById(@PathVariable("productId") Long id) {
         productService.deleteById(id);
     }
 
-    @PutMapping(path = "{productId}")
+    @PutMapping(path = "admin/{productId}")
     public UpdateProductDTO updateProductById(
             @PathVariable("productId") Long productId,
             @Valid @RequestBody UpdateProductDTO dto
