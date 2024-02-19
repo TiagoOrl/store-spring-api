@@ -27,6 +27,13 @@ public class CreateClientDTO {
     @Size(min = 4, max = 22)
     private String password;
 
+    @NotBlank(message = "role is required")
+    @Pattern.List({
+            @Pattern(regexp = "client"),
+            @Pattern(regexp = "admin")
+    })
+    private String role;
+
     @NotNull(message = "dob is null")
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
     private String dob;

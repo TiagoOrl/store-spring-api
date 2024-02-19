@@ -47,6 +47,9 @@ public class Client {
     @Column(name="updated_at")
     private Date updatedAt;
 
+    @Column(nullable = false)
+    private String role;
+
     @OneToOne(mappedBy = "client")
     private Address address;
 
