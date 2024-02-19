@@ -1,4 +1,4 @@
-package com.asm.estore;
+package com.asm.estore.controller;
 
 import com.asm.estore.controller.ClientController;
 import com.asm.estore.dto.client.CreateClientDTO;
