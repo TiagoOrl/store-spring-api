@@ -28,7 +28,7 @@ public class CreateClientDTO {
     private String password;
 
     @NotBlank(message = "role is required")
-    @Pattern(regexp = "(client)|(admin)", message = "role is invalid")
+    @Pattern(regexp = "(user)|(admin)", message = "role is invalid")
     private String role;
 
     @NotNull(message = "dob is null")
