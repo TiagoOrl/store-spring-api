@@ -73,11 +73,11 @@ public class Client implements UserDetails {
         if (role.equals("admin"))
             return List.of(
                     new SimpleGrantedAuthority("admin"),
-                    new SimpleGrantedAuthority("client")
+                    new SimpleGrantedAuthority("user")
             );
 
         else
-            return List.of(new SimpleGrantedAuthority("client"));
+            return List.of(new SimpleGrantedAuthority("user"));
     }
 
     @Override
