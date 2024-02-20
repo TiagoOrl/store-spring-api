@@ -22,7 +22,7 @@ public class AuthController {
         this.authManager = authManager;
         this.passwordEncoder = passwordEncoder;
     }
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         var auth = authManager.authenticate(usernamePassword);
