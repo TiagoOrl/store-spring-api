@@ -38,7 +38,7 @@ public class OrdersController {
         return orderService.getAllByClientId(clientId);
     }
 
-    @GetMapping("user/{orderId}")
+    @GetMapping("admin/{orderId}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long id) {
         return ResponseEntity.ok(orderService.getByOrderId(id));
     }

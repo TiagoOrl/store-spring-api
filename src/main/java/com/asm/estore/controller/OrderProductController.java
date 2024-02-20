@@ -23,7 +23,7 @@ public class OrderProductController {
         this.orderProductService = orderProductService;
     }
 
-    @GetMapping("user")
+    @GetMapping("admin")
     public List<OrderProduct> getAllOrderProducts(
             Optional<Integer> page,
             Optional<Integer> size
