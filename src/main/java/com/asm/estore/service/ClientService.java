@@ -14,9 +14,8 @@ import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -106,6 +105,10 @@ public class ClientService {
         var client = mapper.map(dto, Client.class);
         client.setFullname(dto.getFirstName() + " " + dto.getSecondName());
         client.setDeleted(false);
+
+        String hashedPass = new BCryptPasswordEncoder().encode(dto.getPassword());
+        client.setPassword(hashedPass);
+
         try {
             clientRepository.save(client);
         } catch (RuntimeException e) {
