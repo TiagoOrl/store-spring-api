@@ -1,6 +1,9 @@
 package com.asm.estore.controller;
 
+import com.asm.estore.config.security.TokenService;
+import com.asm.estore.dto.LoginResponseDTO;
 import com.asm.estore.dto.client.LoginDTO;
+import com.asm.estore.entity.Client;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,17 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authManager;
-    private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
-    public AuthController(AuthenticationManager authManager, PasswordEncoder passwordEncoder) {
+    public AuthController(
+            AuthenticationManager authManager,
+            TokenService tokenService
+            ) {
         this.authManager = authManager;
-        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
     @PostMapping("login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         var auth = authManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Client)auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
