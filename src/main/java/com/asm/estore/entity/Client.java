@@ -62,7 +62,7 @@ public class Client implements UserDetails {
     @OneToOne(mappedBy = "client")
     private Address address;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
     public void setDob(String date) {
@@ -73,12 +73,11 @@ public class Client implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role.equals("admin"))
             return List.of(
-                    new SimpleGrantedAuthority("admin"),
-                    new SimpleGrantedAuthority("user")
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority(("ROLE_USER"))
             );
 
-        else
-            return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority(("ROLE_USER")));
     }
 
     @Override

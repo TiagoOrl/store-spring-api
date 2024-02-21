@@ -2,8 +2,10 @@ package com.asm.estore.controller;
 
 import com.asm.estore.config.security.TokenService;
 import com.asm.estore.dto.LoginResponseDTO;
+import com.asm.estore.dto.client.CreateClientDTO;
 import com.asm.estore.dto.client.LoginDTO;
 import com.asm.estore.entity.Client;
+import com.asm.estore.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +23,28 @@ public class AuthController {
 
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
+    private final ClientService clientService;
 
     @Autowired
     public AuthController(
             AuthenticationManager authManager,
-            TokenService tokenService
+            TokenService tokenService,
+            ClientService clientService
             ) {
         this.authManager = authManager;
         this.tokenService = tokenService;
+        this.clientService = clientService;
     }
+
+    @PostMapping("create")
+    public CreateClientDTO createClient(
+            @Valid @RequestBody CreateClientDTO dto
+    ) {
+        return clientService.createClient(dto);
+    }
+
     @PostMapping("login")
-    public ResponseEntity login(@RequestBody @Valid LoginDTO dto) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         var auth = authManager.authenticate(usernamePassword);
 

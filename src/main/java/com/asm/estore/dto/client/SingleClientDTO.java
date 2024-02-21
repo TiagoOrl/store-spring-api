@@ -1,12 +1,10 @@
 package com.asm.estore.dto.client;
 
 import com.asm.estore.dto.address.AddressDTO;
-import com.asm.estore.dto.order.OrderDTO;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 @Data
 public class SingleClientDTO implements Serializable {
