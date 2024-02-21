@@ -21,30 +21,29 @@ public class SecurityConfigs {
     SecurityFilter securityFilter;
 
     @Bean
-     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
          return httpSecurity
                  .csrf(csrf -> csrf.disable())
                  .sessionManagement(session ->
                          session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                  )
                  .authorizeHttpRequests(auth -> auth
-                         .requestMatchers("/admin/**").hasRole("admin")
-                         .requestMatchers("/user/**").hasRole("user")
+                         .requestMatchers("/api/admin/**").hasRole("admin")
+                         .requestMatchers("/api/user/**").hasRole("user")
                          
-                         .requestMatchers("/api/client/create").permitAll()
-                         .requestMatchers("/api/auth/**").permitAll()
+                         .requestMatchers("/api/client/create", "/api/auth/**").permitAll()
                          .anyRequest().authenticated()
                  )
                  .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                  .build();
-     }
+    }
 
-     @Bean
-     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-     }
+    }
 
-     @Bean
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

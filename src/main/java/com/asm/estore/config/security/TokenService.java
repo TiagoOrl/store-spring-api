@@ -4,18 +4,13 @@ import com.asm.estore.entity.Client;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Calendar;
-import java.util.Date;
 
 @Service
 public class TokenService {
@@ -37,7 +32,7 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token) {
+    public String extractData(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -52,6 +47,6 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusHours(5).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(5000).toInstant(ZoneOffset.of("-03:00"));
     }
 }

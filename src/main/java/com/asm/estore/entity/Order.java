@@ -3,7 +3,9 @@ package com.asm.estore.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
@@ -11,7 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "order_main")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Order {
     @Id
