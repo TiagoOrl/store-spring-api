@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/user/product")
 public class ProductController {
     private final ProductService productService;
 
@@ -23,7 +23,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("user")
+    @GetMapping
     public List<ProductDTO> getAllProducts(
             @RequestParam(value = "page") Optional<Integer> page,
             @RequestParam(value = "size") Optional<Integer> size
@@ -31,32 +31,12 @@ public class ProductController {
         return productService.getAll(page, size);
     }
 
-    @GetMapping("user/get-by-name")
+    @GetMapping("get-by-name")
     List<ProductDTO> getProductsByName(
             @Valid @RequestBody SearchProductDTO dto,
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size
     ) {
         return productService.getByName(dto.getName(), page, size);
-    }
-
-    @PostMapping("admin/add")
-    public AddProductDTO addProduct(
-            @Valid @RequestBody AddProductDTO product
-    ) {
-        return productService.addProduct(product);
-    }
-
-    @DeleteMapping(path = "admin/{productId}")
-    public void deleteProductById(@PathVariable("productId") Long id) {
-        productService.deleteById(id);
-    }
-
-    @PutMapping(path = "admin/{productId}")
-    public UpdateProductDTO updateProductById(
-            @PathVariable("productId") Long productId,
-            @Valid @RequestBody UpdateProductDTO dto
-    ) {
-        return productService.updateProductById(productId, dto);
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/order")
+@RequestMapping("api/user/order")
 public class OrdersController {
     private final OrderService orderService;
 
@@ -25,32 +25,20 @@ public class OrdersController {
         this.orderService = orderService;
     }
 
-    @GetMapping("user")
-    public List<OrderDTO> getAllOrders(
-            @RequestParam Optional<Integer> page,
-            @RequestParam Optional<Integer> size
-    ) {
-        return orderService.getAll(page, size);
-    }
 
-    @GetMapping("user/client/{clientId}")
+    @GetMapping("client/{clientId}")
     public List<OrderDTO> getOrdersByClientId(@PathVariable("clientId") Long clientId) {
         return orderService.getAllByClientId(clientId);
     }
 
-    @GetMapping("admin/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long id) {
-        return ResponseEntity.ok(orderService.getByOrderId(id));
-    }
-
-    @PostMapping(path = "user/create/{clientId}")
+    @PostMapping(path = "create/{clientId}")
     public OrderDTO createOrderByClientId(
             @PathVariable("clientId") Long id
     ) {
         return orderService.createNewOrder(id);
     }
 
-    @PutMapping(path = "user/finalize/{orderId}")
+    @PutMapping(path = "finalize/{orderId}")
     public OrderDTO finalizeOrder(
             @PathVariable("orderId") Long orderId
     ) {

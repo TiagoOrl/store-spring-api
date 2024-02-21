@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/order_product")
+@RequestMapping("api/user/order_product")
 public class OrderProductController {
     private final OrderProductService orderProductService;
 
@@ -23,34 +23,27 @@ public class OrderProductController {
         this.orderProductService = orderProductService;
     }
 
-    @GetMapping("admin")
-    public List<OrderProduct> getAllOrderProducts(
-            Optional<Integer> page,
-            Optional<Integer> size
-    ) {
-        return orderProductService.getAllOrderProducts(page, size);
-    }
 
-    @GetMapping(path = "user/{orderId}")
+    @GetMapping(path = "{orderId}")
     public List<OrderProductDTO> getAllByOrderId(@PathVariable("orderId") Long id) {
         return orderProductService.getAllByOrderId(id);
     }
 
-    @PostMapping(path = "user/add")
+    @PostMapping(path = "add")
     public OrderProductDTO addProductToOrder(
             @Valid @RequestBody OrderProductDTO dto
     ) {
         return orderProductService.addOrderProduct(dto);
     }
 
-    @PutMapping(path = "user/update_amount")
+    @PutMapping(path = "update_amount")
     public UpdateOrderProductDTO changeProductAmount(
             @Valid @RequestBody UpdateOrderProductDTO dto
     ) {
         return orderProductService.changeAmount(dto);
     }
 
-    @DeleteMapping(path = "user/delete")
+    @DeleteMapping(path = "delete")
     public DeleteOrderProductDTO deleteOrderProduct(
             @Valid @RequestBody DeleteOrderProductDTO dto
     ) {

@@ -5,6 +5,7 @@ import com.asm.estore.dto.LoginResponseDTO;
 import com.asm.estore.dto.client.LoginDTO;
 import com.asm.estore.entity.Client;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ public class AuthController {
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
 
+    @Autowired
     public AuthController(
             AuthenticationManager authManager,
             TokenService tokenService
