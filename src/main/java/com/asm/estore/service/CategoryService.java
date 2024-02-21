@@ -5,6 +5,7 @@ import com.asm.estore.dto.category.AddCategoryDTO;
 import com.asm.estore.dto.category.CategoryDTO;
 import com.asm.estore.entity.ProductCategory;
 import com.asm.estore.repository.ProductCategoryRepository;
+import com.asm.estore.utils.PaginationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CategoryService {
@@ -24,8 +26,13 @@ public class CategoryService {
         this.mapper = mapper;
     }
 
-    public List<CategoryDTO> getAll() {
-        return repository.findAll().stream().map(
+    public List<CategoryDTO> getAll(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pagUtils = new PaginationUtil(page, size);
+
+        return repository.findAll(pagUtils.getPageRequest()).stream().map(
                 category -> mapper.map(category, CategoryDTO.class)
         ).toList();
     }

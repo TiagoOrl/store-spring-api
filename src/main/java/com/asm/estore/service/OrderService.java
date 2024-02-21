@@ -8,6 +8,7 @@ import com.asm.estore.repository.ClientRepository;
 import com.asm.estore.repository.OrderProductRepository;
 import com.asm.estore.repository.OrderRepository;
 import com.asm.estore.repository.ProductRepository;
+import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,13 @@ public class OrderService {
         this.mapper = mapper;
     }
 
-    public List<OrderDTO> getAll(Integer page, Integer size) {
-        if (size > 30)
-            size = 30;
+    public List<OrderDTO> getAll(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pagUtils = new PaginationUtil(page, size);
 
-        var pageable = PageRequest.of(page, size);
-        return orderRepository.findAll(pageable).stream().map(
+        return orderRepository.findAll(pagUtils.getPageRequest()).stream().map(
                 order -> mapper.map(order, OrderDTO.class)
         ).toList();
     }

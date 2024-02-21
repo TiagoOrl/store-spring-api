@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/user/product")
 public class ProductController {
     private final ProductService productService;
 
@@ -33,28 +33,10 @@ public class ProductController {
 
     @GetMapping("get-by-name")
     List<ProductDTO> getProductsByName(
-            @Valid @RequestBody SearchProductDTO dto
+            @Valid @RequestBody SearchProductDTO dto,
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size
     ) {
-        return productService.getByName(dto.getName());
-    }
-
-    @PostMapping("add")
-    public AddProductDTO addProduct(
-            @Valid @RequestBody AddProductDTO product
-    ) {
-        return productService.addProduct(product);
-    }
-
-    @DeleteMapping(path = "{productId}")
-    public void deleteProductById(@PathVariable("productId") Long id) {
-        productService.deleteById(id);
-    }
-
-    @PutMapping(path = "{productId}")
-    public UpdateProductDTO updateProductById(
-            @PathVariable("productId") Long productId,
-            @Valid @RequestBody UpdateProductDTO dto
-    ) {
-        return productService.updateProductById(productId, dto);
+        return productService.getByName(dto.getName(), page, size);
     }
 }

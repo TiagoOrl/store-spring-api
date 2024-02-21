@@ -9,6 +9,7 @@ import com.asm.estore.entity.Product;
 import com.asm.estore.repository.OrderProductRepository;
 import com.asm.estore.repository.OrderRepository;
 import com.asm.estore.repository.ProductRepository;
+import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,12 @@ public class OrderProductService {
         this.mapper = mapper;
     }
 
-    public List<OrderProduct> getAllOrderProducts() {
-        return orderProductRepository.findAll();
+    public List<OrderProduct> getAllOrderProducts(
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pagUtils = new PaginationUtil(page, size);
+        return orderProductRepository.findAll(pagUtils.getPageRequest()).stream().toList();
     }
 
     public List<OrderProductDTO> getAllByOrderId(Long orderId) {

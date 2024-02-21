@@ -13,9 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("api/order")
+@RequestMapping("api/user/order")
 public class OrdersController {
     private final OrderService orderService;
 
@@ -24,22 +25,10 @@ public class OrdersController {
         this.orderService = orderService;
     }
 
-    @GetMapping
-    public List<OrderDTO> getAllOrders(
-            @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "size") Integer size
-    ) {
-        return orderService.getAll(page, size);
-    }
 
     @GetMapping("client/{clientId}")
     public List<OrderDTO> getOrdersByClientId(@PathVariable("clientId") Long clientId) {
         return orderService.getAllByClientId(clientId);
-    }
-
-    @GetMapping("{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long id) {
-        return ResponseEntity.ok(orderService.getByOrderId(id));
     }
 
     @PostMapping(path = "create/{clientId}")

@@ -17,6 +17,7 @@ public class SingleClientDTO implements Serializable {
     private String countryId;
     private String email;
     private String dob;
+    private String role;
     private Date createdAt;
     private Date updatedAt;
     private AddressDTO address;

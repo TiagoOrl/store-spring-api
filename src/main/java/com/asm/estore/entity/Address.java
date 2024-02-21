@@ -2,7 +2,9 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,7 +12,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "address")
-@Data @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

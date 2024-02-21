@@ -2,11 +2,15 @@ package com.asm.estore.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "order_product")
-@Data @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("api/order_product")
+@RequestMapping("api/user/order_product")
 public class OrderProductController {
     private final OrderProductService orderProductService;
 
@@ -22,10 +23,6 @@ public class OrderProductController {
         this.orderProductService = orderProductService;
     }
 
-    @GetMapping
-    public List<OrderProduct> getAllOrderProducts() {
-        return orderProductService.getAllOrderProducts();
-    }
 
     @GetMapping(path = "{orderId}")
     public List<OrderProductDTO> getAllByOrderId(@PathVariable("orderId") Long id) {

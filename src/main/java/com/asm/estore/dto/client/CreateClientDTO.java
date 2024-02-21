@@ -27,6 +27,10 @@ public class CreateClientDTO {
     @Size(min = 4, max = 22)
     private String password;
 
+    @NotBlank(message = "role is required")
+    @Pattern(regexp = "(user)|(admin)", message = "role is invalid")
+    private String role;
+
     @NotNull(message = "dob is null")
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
     private String dob;

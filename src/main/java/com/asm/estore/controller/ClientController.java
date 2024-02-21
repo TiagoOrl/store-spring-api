@@ -16,35 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/client")
+@RequestMapping("api/user/client")
 public class ClientController {
     private final ClientService service;
 
     @Autowired
     public ClientController(ClientService service) {
         this.service = service;
-    }
-
-    @GetMapping
-    public List<SingleClientDTO> getAllClients(
-            @RequestParam Optional<Integer> page,
-            @RequestParam Optional<Integer> size
-    ) {
-        return service.getAllClients(page, size);
-    }
-
-    @GetMapping("get-by-name")
-    public List<SingleClientDTO> getAllByName(
-            @RequestParam String name,
-            Optional<Integer> page,
-            Optional<Integer> size
-    ) {
-        return service.getAllByNameMatch(name, page, size);
-    }
-
-    @GetMapping("{clientId}")
-    public SingleClientDTO getClientById(@PathVariable("clientId") Long clientId) {
-        return service.getById(clientId);
     }
 
     @PostMapping("create")
@@ -60,14 +38,6 @@ public class ClientController {
             @Valid @RequestBody UpdateClientDTO dto
     ) {
         return service.updateClient(clientId, dto);
-    }
-
-    @GetMapping("address")
-    public List<AddressDTO> getAllAddresses(
-            @RequestParam Optional<Integer> page,
-            @RequestParam Optional<Integer> size
-    ) {
-        return service.getAllAddresses(page, size);
     }
 
     @PostMapping("address/create")

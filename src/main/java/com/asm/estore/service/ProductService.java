@@ -6,6 +6,7 @@ import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.repository.ProductCategoryRepository;
 import com.asm.estore.repository.ProductRepository;
+import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,19 +42,25 @@ public class ProductService {
             Optional<Integer> page,
             Optional<Integer> size
     ) {
-        var pageVal = 0;
-        var sizeVal = 30;
+        var pagUtils = new PaginationUtil(page, size);
 
-        if (page.isPresent() && size.isPresent()) {
-            pageVal = page.get();
-            sizeVal = size.get();
-            if (sizeVal > 30)
-                sizeVal = 30;
-        }
-
-        return repository.findAll(PageRequest.of(pageVal, sizeVal)).stream().map(
+        return repository.findAll(pagUtils.getPageRequest()).stream().map(
                 p -> mapper.map(p, ProductDTO.class)
         ).toList();
+    }
+
+    public List<ProductDTO> getByName(
+            String name,
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pagUtils = new PaginationUtil(page, size);
+
+        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), pagUtils.getPageRequest());
+        if (opt.isEmpty() || opt.get().isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
     }
 
     public AddProductDTO addProduct(AddProductDTO dto) {
@@ -130,17 +137,5 @@ public class ProductService {
         );
 
         return dto;
-    }
-
-    public List<ProductDTO> getByName(String name) {
-        if (name == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        Pageable paging = PageRequest.of(0, 5);
-
-        Optional<List<Product>> opt =  repository.findAllByName(name.toUpperCase().strip(), paging);
-        if (opt.isEmpty() || opt.get().isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        return opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
     }
 }
