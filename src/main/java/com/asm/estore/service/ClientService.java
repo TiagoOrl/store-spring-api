@@ -8,12 +8,18 @@ import com.asm.estore.dto.client.SingleClientDTO;
 import com.asm.estore.dto.client.UpdateClientDTO;
 import com.asm.estore.entity.Address;
 import com.asm.estore.entity.Client;
+import com.asm.estore.entity.EmailModel;
 import com.asm.estore.repository.AddressRepository;
 import com.asm.estore.repository.ClientRepository;
 import com.asm.estore.utils.PaginationUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -28,16 +34,24 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
     private final ModelMapper mapper;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${spring.rabbitmq.queue}")
+    private String queue;
+
+    @Value("${email.username}")
+    private String emailUsername;
 
     @Autowired
     public ClientService(
             ClientRepository repository,
             AddressRepository addressRepository,
-            ModelMapper mapper
+            ModelMapper mapper,
+            RabbitTemplate rabbitTemplate
     ) {
         this.clientRepository = repository;
         this.addressRepository = addressRepository;
         this.mapper = mapper;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
 //    @Cacheable("clients1")
@@ -114,6 +128,25 @@ public class ClientService {
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+
+        try {
+            var email = new EmailModel(
+                    emailUsername,
+                    client.getEmail(),
+                    "Conta criada na ESTORE",
+                    "Olá " + client.getFirstName() + ", sua conta foi criada com sucesso em nossa loja, " +
+                            "em breve você receberá um email com um código de ativação da sua conta."
+            );
+
+            ObjectMapper mapper = new ObjectMapper();
+            var serialized = mapper.writeValueAsBytes(email);
+            rabbitTemplate.send(queue, new Message(serialized));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         dto.setId(client.getId());
         return dto;
     }
