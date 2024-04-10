@@ -7,7 +7,9 @@ import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
 import com.asm.estore.service.ProductService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/public/product")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
     private final ProductService productService;
 
@@ -24,11 +27,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDTO> getAllProducts(
+    public ResponseEntity<List<ProductDTO>> getAllProducts(
             @RequestParam(value = "page") Optional<Integer> page,
             @RequestParam(value = "size") Optional<Integer> size
             ) {
-        return productService.getAll(page, size);
+        return ResponseEntity.ok(productService.getAll(page, size));
     }
 
     @GetMapping("get-by-name")

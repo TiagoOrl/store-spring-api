@@ -19,7 +19,7 @@ public class UpdateProductDTO {
     @Min(value = 0, message = "unitPrice should be >= 0")
     private Float unitPrice;
 
-    @Size(min = 6, max = 350, message = "imageUrl is invalid")
+    @Size(min = 6, max = 600, message = "imageUrl is invalid")
     private String imageUrl;
 
     @Min(value = 0, message = "unitsInStock should be >= 0")
