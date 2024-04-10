@@ -42,4 +42,13 @@ public class ProductController {
     ) {
         return productService.getByName(dto.getName(), page, size);
     }
+
+    @GetMapping("get-by-category")
+    List<ProductDTO> getByCategory(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Long catId
+    ) {
+        return productService.getByCatId(catId, page, size);
+    }
 }
