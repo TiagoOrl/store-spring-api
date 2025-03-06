@@ -49,6 +49,23 @@ public class ProductService {
         ).toList();
     }
 
+    public List<ProductDTO> getByCatId(
+            Long catId,
+            Optional<Integer> page,
+            Optional<Integer> size
+    ) {
+        var pagUtils = new PaginationUtil(page, size);
+
+        var opt = repository.findByCatId(catId, pagUtils.getPageRequest());
+
+        if (opt.isEmpty() || opt.get().isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return opt.get().stream().map(
+                p -> mapper.map(p, ProductDTO.class)
+        ).toList();
+    }
+
     public List<ProductDTO> getByName(
             String name,
             Optional<Integer> page,
