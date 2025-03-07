@@ -35,6 +35,9 @@ sudo docker run hello-world
 ### mysql
 docker run --name mysql_instance -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin --cpus=1.5 -d mysql:8.0-debian
 
+### RabbitMQ
+docker run -d --name rabbitMQ -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin  rabbitmq:3-management
+
 
 ### REDIS
 docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
