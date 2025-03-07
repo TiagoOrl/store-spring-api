@@ -1,6 +1,6 @@
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Notebook Ideapad 3",
     "description": "Core i5 8GB RAM 1TB HDD",
@@ -12,7 +12,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "PC Gamer RTX 3060",
     "description": "Ryzen 5, 16GB RAM, 1TB SSD, RTX 3060",
@@ -24,7 +24,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Kit Caneta BIC",
     "description": "Cores Preto, Verde e Vermelho",
@@ -36,7 +36,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Caneta BIC Azul",
     "description": "Ponta fina",
@@ -48,7 +48,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Caneta BIC Preto",
     "description": "Ponta fina",
@@ -60,7 +60,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Papel A4 pacote 150",
     "description": "150 unidades cada",
@@ -72,7 +72,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Papel A4 pacote 300",
     "description": "300 unidades cada",
@@ -85,7 +85,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Batedeira ARNO AM",
     "description": "750W",
@@ -97,7 +97,7 @@ curl --location 'localhost:8080/api/admin/product/add' \
 
 curl --location 'localhost:8080/api/admin/product/add' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJtYXJpYUBnbWFpbC5jb20iLCJleHAiOjE3MTMxNTUyOTJ9.2DhNiwt1lkxprS1i8lSZink5_FjCG4gdFJbu-G3jjKc' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlc3RvcmUiLCJzdWIiOiJ0aWFnb19vcmxhbmRvQHlhaG9vLmNvbSIsImV4cCI6MTc0MTgzODg4M30.H062UzG37qRrlRwbR8_ZnLs_vq5YGtVy9eMF0zJONLM' \
 --data '{
     "name": "Liquidificador ARNO Ultra MAX",
     "description": "850W, com kit filtro",
