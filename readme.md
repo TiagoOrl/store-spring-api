@@ -10,6 +10,7 @@ categorias, novos usuários, endereços, criar pedidos, adicionar produtos a um 
 editar a quantidade de um produto em um pedido, e realizar diversas alterações e consultas.
 
 
+/////
 
 ## Instalar Docker
 
