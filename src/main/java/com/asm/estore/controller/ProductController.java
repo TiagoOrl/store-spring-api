@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/public/product")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
     private final ProductService productService;
 
@@ -34,7 +33,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAll(page, size));
     }
 
-    @GetMapping("get-by-name")
+    @PutMapping("get-by-name")
     List<ProductDTO> getProductsByName(
             @Valid @RequestBody SearchProductDTO dto,
             @RequestParam Optional<Integer> page,

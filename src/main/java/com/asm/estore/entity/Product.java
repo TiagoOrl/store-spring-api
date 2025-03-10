@@ -32,7 +32,7 @@ public class Product {
     @Column(name="unit_price", nullable = false)
     private Float unitPrice;
 
-    @Column(name="image_url")
+    @Column(name="image_url", columnDefinition = "varchar(400)")
     private String imageUrl;
 
     @Column(nullable = false)

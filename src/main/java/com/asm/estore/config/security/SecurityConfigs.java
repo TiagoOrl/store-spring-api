@@ -27,13 +27,13 @@ public class SecurityConfigs {
                  .sessionManagement(session ->
                          session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                  )
-                 .authorizeHttpRequests(auth -> auth
-                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                         .requestMatchers("/api/user/**").hasRole("USER")
-                         .requestMatchers("/api/public/**").permitAll()
-                         .requestMatchers("/api/auth/**").permitAll()
-                         .anyRequest().authenticated()
-                 )
+//                 .authorizeHttpRequests(auth -> auth
+//                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+//                         .requestMatchers("/api/user/**").hasRole("USER")
+//                         .requestMatchers("/api/public/**").permitAll()
+//                         .requestMatchers("/api/auth/**").permitAll()
+//                         .anyRequest().authenticated()
+//                 )
                  .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                  .build();
     }
