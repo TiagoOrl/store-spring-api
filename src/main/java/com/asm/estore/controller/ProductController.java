@@ -33,7 +33,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAll(page, size));
     }
 
-    @GetMapping("get-by-name")
+    @PutMapping("get-by-name")
     List<ProductDTO> getProductsByName(
             @Valid @RequestBody SearchProductDTO dto,
             @RequestParam Optional<Integer> page,
