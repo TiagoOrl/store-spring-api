@@ -50,4 +50,9 @@ public class ProductController {
     ) {
         return productService.getByCatId(catId, page, size);
     }
+
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("productId") Long productId ) {
+        return ResponseEntity.ok(productService.getById(productId));
+    }
 }
