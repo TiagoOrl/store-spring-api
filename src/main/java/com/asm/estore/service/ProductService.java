@@ -80,6 +80,15 @@ public class ProductService {
         return opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
     }
 
+    public ProductDTO getById(Long id) {
+        var optProduct = repository.findProductById(id);
+
+        if (optProduct.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found");
+
+        return mapper.map(optProduct.get(), ProductDTO.class);
+    }
+
     public AddProductDTO addProduct(AddProductDTO dto) {
         repository.findProductByName(dto.getName()).ifPresent(
                 i -> {
