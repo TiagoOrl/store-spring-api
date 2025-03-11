@@ -30,18 +30,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         var token = this.recoverToken(request);
 
-        if (token != null) {
-            var login = tokenService.extractData(token);
-            UserDetails userDetails = clientRepository.findUserDetailByEmail(login);
-
-            var authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
-            // if token is present, set authentication in Spring Security Context Holder
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        // commenting this piece of code to disable Security for testing/developing
+//        if (token != null) {
+//            var login = tokenService.extractData(token);
+//            UserDetails userDetails = clientRepository.findUserDetailByEmail(login);
+//
+//            var authentication = new UsernamePasswordAuthenticationToken(
+//                    userDetails,
+//                    null,
+//                    userDetails.getAuthorities()
+//            );
+//            // if token is present, set authentication in Spring Security Context Holder
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        }
         // calls next filter
         filterChain.doFilter(request, response);
     }
