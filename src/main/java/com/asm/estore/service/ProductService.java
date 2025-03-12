@@ -1,6 +1,7 @@
 package com.asm.estore.service;
 
 import com.asm.estore.dto.product.AddProductDTO;
+import com.asm.estore.dto.ListContainerDTO;
 import com.asm.estore.dto.product.ProductDTO;
 import com.asm.estore.dto.product.UpdateProductDTO;
 import com.asm.estore.entity.Product;
@@ -10,8 +11,6 @@ import com.asm.estore.utils.PaginationUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,18 +37,21 @@ public class ProductService {
         this.mapper = mapper;
     }
 
-    public List<ProductDTO> getAll(
+    public ListContainerDTO<ProductDTO> getAll(
             Optional<Integer> page,
             Optional<Integer> size
     ) {
         var pagUtils = new PaginationUtil(page, size);
 
-        return repository.findAll(pagUtils.getPageRequest()).stream().map(
+        var products = repository.findAll(pagUtils.getPageRequest()).stream().map(
                 p -> mapper.map(p, ProductDTO.class)
         ).toList();
+
+        var listCount = repository.count();
+        return new ListContainerDTO<ProductDTO>(pagUtils.page, pagUtils.size, (int) (listCount / pagUtils.size), (int) listCount, products);
     }
 
-    public List<ProductDTO> getByCatId(
+    public ListContainerDTO<ProductDTO> getByCatId(
             Long catId,
             Optional<Integer> page,
             Optional<Integer> size
@@ -61,12 +63,15 @@ public class ProductService {
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return opt.get().stream().map(
+        var products =  opt.get().stream().map(
                 p -> mapper.map(p, ProductDTO.class)
         ).toList();
+
+        var listCount = opt.get().size();
+        return new ListContainerDTO<ProductDTO>(pagUtils.page, pagUtils.size, (listCount / pagUtils.size), listCount, products);
     }
 
-    public List<ProductDTO> getByName(
+    public ListContainerDTO<ProductDTO> getByName(
             String name,
             Optional<Integer> page,
             Optional<Integer> size
@@ -77,7 +82,10 @@ public class ProductService {
         if (opt.isEmpty() || opt.get().isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
+        var products =  opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
+
+        var listCount = opt.get().size();
+        return new ListContainerDTO<ProductDTO>(pagUtils.page, pagUtils.size, (listCount / pagUtils.size), listCount, products);
     }
 
     public ProductDTO getById(Long id) {

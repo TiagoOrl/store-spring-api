@@ -1,13 +1,9 @@
 package com.asm.estore.controller;
 
-import com.asm.estore.dto.product.AddProductDTO;
-import com.asm.estore.dto.product.ProductDTO;
-import com.asm.estore.dto.product.SearchProductDTO;
-import com.asm.estore.dto.product.UpdateProductDTO;
-import com.asm.estore.entity.Product;
+import com.asm.estore.dto.ListContainerDTO;
+import com.asm.estore.dto.product.*;
 import com.asm.estore.service.ProductService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts(
+    public ResponseEntity<ListContainerDTO<ProductDTO>> getAllProducts(
             @RequestParam(value = "page") Optional<Integer> page,
             @RequestParam(value = "size") Optional<Integer> size
             ) {
@@ -34,21 +30,21 @@ public class ProductController {
     }
 
     @PutMapping("get-by-name")
-    List<ProductDTO> getProductsByName(
+    ResponseEntity<ListContainerDTO<ProductDTO>> getProductsByName(
             @Valid @RequestBody SearchProductDTO dto,
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size
     ) {
-        return productService.getByName(dto.getName(), page, size);
+        return ResponseEntity.ok(productService.getByName(dto.getName(), page, size));
     }
 
     @GetMapping("get-by-category")
-    List<ProductDTO> getByCategory(
+    ResponseEntity<ListContainerDTO<ProductDTO>> getByCategory(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
             @RequestParam Long catId
     ) {
-        return productService.getByCatId(catId, page, size);
+        return ResponseEntity.ok(productService.getByCatId(catId, page, size));
     }
 
     @GetMapping("{productId}")
