@@ -15,8 +15,11 @@ public class ListContainerDTO<F> {
     public ListContainerDTO(Integer page, Integer size, Integer totalPages, Integer totalElements, List<F> list) {
         this.page = page;
         this.size = size;
-        this.totalPages = totalPages;
+        this.totalPages = totalPages + 1;
         this.totalElements = totalElements;
         this.list = list;
+
+        if (size == totalElements)
+            this.totalPages = 1;
     }
 }
