@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
 
 public class PaginationUtil {
-    private Integer page = 0;
-    private Integer size = 30;
+    public Integer page = 0;
+    public Integer size = 30;
     @Getter
     private final PageRequest pageRequest;
     public PaginationUtil(
@@ -17,8 +17,12 @@ public class PaginationUtil {
         if (pageOpt.isPresent() && sizeOpt.isPresent()) {
             page = pageOpt.get();
             size = sizeOpt.get();
-            if (size > 30)
+            if (size > 30 || size < 1)
                 size = 30;
+
+            if (page < 0)
+                page = 0;
+
         }
 
         pageRequest = PageRequest.of(page, size);
