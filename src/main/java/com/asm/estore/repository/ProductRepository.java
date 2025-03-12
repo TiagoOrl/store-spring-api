@@ -24,6 +24,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE UPPER(p.name) LIKE CONCAT('%',UPPER(:name),'%')")
     Optional<List<Product>> findAllByName(@Param("name") String name, Pageable pageable);
 
+    @Query("SELECT count(p) FROM Product p WHERE UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%')")
+    Integer countByNameLike(@Param("name") String name);
+
     @Query("SELECT p FROM Product p WHERE p.category.id = ?1")
     Optional<List<Product>> findByCatId(Long catId, Pageable pageable);
+
+    @Query(value = "SELECT count(*) from product WHERE fk_category_id = ?1", nativeQuery = true)
+    Integer countByCategoryId(Long catId);
 }

@@ -67,7 +67,7 @@ public class ProductService {
                 p -> mapper.map(p, ProductDTO.class)
         ).toList();
 
-        var listCount = opt.get().size();
+        var listCount = repository.countByCategoryId(catId);
         return new ListContainerDTO<ProductDTO>(pagUtils.page, pagUtils.size, (listCount / pagUtils.size), listCount, products);
     }
 
@@ -84,7 +84,7 @@ public class ProductService {
 
         var products =  opt.get().stream().map(i -> mapper.map(i, ProductDTO.class)).toList();
 
-        var listCount = opt.get().size();
+        var listCount = repository.countByNameLike(name.toUpperCase().strip());
         return new ListContainerDTO<ProductDTO>(pagUtils.page, pagUtils.size, (listCount / pagUtils.size), listCount, products);
     }
 
