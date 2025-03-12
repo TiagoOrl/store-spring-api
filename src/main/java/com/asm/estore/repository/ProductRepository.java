@@ -24,6 +24,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE UPPER(p.name) LIKE CONCAT('%',UPPER(:name),'%')")
     Optional<List<Product>> findAllByName(@Param("name") String name, Pageable pageable);
 
+//    @Query(value = "SELECT * from product WHERE name LIKE %:name%", nativeQuery = true)
+//    Optional<List<Product>> findAllByName(@Param("name") String name, Pageable pageable);
+
     @Query("SELECT count(p) FROM Product p WHERE UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%')")
     Integer countByNameLike(@Param("name") String name);
 
