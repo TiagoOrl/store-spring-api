@@ -65,54 +65,58 @@ public class OrderProductService {
      * @param dto Contains the OrderId and ProductId
      */
     @Transactional
-    public OrderProductDTO addOrderProduct(OrderProductDTO dto) {
-        if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
-        }
+    public List<OrderProductDTO> addOrderProduct(List<OrderProductDTO> dtos) {
 
-        orderRepository.findById(dto.getFkOrderId()).ifPresentOrElse(
-            order -> {
-                if (order.getFinalized())
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Order of id: " + dto.getFkOrderId() + " already finalized");
-
-                Optional<OrderProduct> foundOrderProduct =
-                        orderProductRepository.findOrderProductByOrderIdProductId(dto.getFkOrderId(), dto.getFkProductId());
-
-                if (foundOrderProduct.isPresent()) {
-                    throw new ResponseStatusException(
-                            HttpStatus.CONFLICT, "This Product Id: " + dto.getFkProductId() +
-                            " has already been added to this Order Id: " + dto.getFkOrderId()
-                        );
-                } else {
-                    var newOrderProduct = mapper.map(dto, OrderProduct.class);
-                    productRepository.findById(dto.getFkProductId()).ifPresentOrElse(
-                            (product) -> {
-                                if (dto.getAmount() > product.getUnitsInStock())
-                                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                            "This product order: " + product.getName() +
-                                            " amount requested: " + dto.getAmount() +
-                                            ", exceeds the stock count: " + product.getUnitsInStock()
-                                    );
-
-                                order.setTotalSum(
-                                        order.getTotalSum() +
-                                        product.getUnitPrice() *
-                                        dto.getAmount()
-                                );
-
-                                newOrderProduct.setProductName(product.getName());
-                                newOrderProduct.setUnitPrice(product.getUnitPrice());
-                                orderProductRepository.save(newOrderProduct);
-                            },  () -> {
-                                throw new ResponseStatusException(HttpStatus.CONFLICT, "This Product of Id: " + dto.getFkProductId() +  " doesn't exists in DB");
-                            }
-                    );
-                }
-            }, () -> {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order of id: "+ dto.getFkOrderId() + " Not found");
+        dtos.forEach(dto -> {
+            if (dto.getFkOrderId() ==  null || dto.getFkProductId() == null || dto.getAmount() == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
             }
-        );
-        return dto;
+
+            orderRepository.findById(dto.getFkOrderId()).ifPresentOrElse(
+                    order -> {
+                        if (order.getFinalized())
+                            throw new ResponseStatusException(HttpStatus.CONFLICT, "Order of id: " + dto.getFkOrderId() + " already finalized");
+
+                        Optional<OrderProduct> foundOrderProduct =
+                                orderProductRepository.findOrderProductByOrderIdProductId(dto.getFkOrderId(), dto.getFkProductId());
+
+                        if (foundOrderProduct.isPresent()) {
+                            throw new ResponseStatusException(
+                                    HttpStatus.CONFLICT, "This Product Id: " + dto.getFkProductId() +
+                                    " has already been added to this Order Id: " + dto.getFkOrderId()
+                            );
+                        } else {
+                            var newOrderProduct = mapper.map(dto, OrderProduct.class);
+                            productRepository.findById(dto.getFkProductId()).ifPresentOrElse(
+                                    (product) -> {
+                                        if (dto.getAmount() > product.getUnitsInStock())
+                                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                    "This product order: " + product.getName() +
+                                                            " amount requested: " + dto.getAmount() +
+                                                            ", exceeds the stock count: " + product.getUnitsInStock()
+                                            );
+
+                                        order.setTotalSum(
+                                                order.getTotalSum() +
+                                                        product.getUnitPrice() *
+                                                                dto.getAmount()
+                                        );
+
+                                        newOrderProduct.setProductName(product.getName());
+                                        newOrderProduct.setUnitPrice(product.getUnitPrice());
+                                        orderProductRepository.save(newOrderProduct);
+                                    },  () -> {
+                                        throw new ResponseStatusException(HttpStatus.CONFLICT, "This Product of Id: " + dto.getFkProductId() +  " doesn't exists in DB");
+                                    }
+                            );
+                        }
+                    }, () -> {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order of id: "+ dto.getFkOrderId() + " Not found");
+                    }
+            );
+        });
+
+        return dtos;
     }
 
     @Transactional

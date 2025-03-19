@@ -30,10 +30,10 @@ public class OrderProductController {
     }
 
     @PostMapping(path = "add")
-    public OrderProductDTO addProductToOrder(
-            @Valid @RequestBody OrderProductDTO dto
+    public List<OrderProductDTO> addProductToOrder(
+            @Valid @RequestBody List<OrderProductDTO> dtos
     ) {
-        return orderProductService.addOrderProduct(dto);
+        return orderProductService.addOrderProduct(dtos);
     }
 
     @PutMapping(path = "update_amount")
