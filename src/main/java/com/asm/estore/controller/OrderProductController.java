@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user/order_product")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrderProductController {
     private final OrderProductService orderProductService;
 
